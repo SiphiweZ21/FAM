@@ -6,6 +6,7 @@ import HomePage from './pages/HomePage'
 import MissionPage from './pages/MissionPage'
 import MySubjectsPage from './pages/MySubjectsPage'
 import PastPapersPage from './pages/PastPapersPage'
+import PaymentCallbackPage from './pages/PaymentCallbackPage'
 import QuizPage from './pages/QuizPage'
 import SubjectPage from './pages/SubjectPage'
 import SubjectsPage from './pages/SubjectsPage'
@@ -57,6 +58,11 @@ export default function App() {
         <Route
           path="/account"
           element={<AccountPage />}
+        />
+
+        <Route
+          path="/payment/callback"
+          element={<PaymentCallbackPage />}
         />
       </Route>
     </Routes>

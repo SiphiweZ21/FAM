@@ -32,6 +32,10 @@ import {
   supabase
 } from '../lib/supabase'
 
+import {
+  startPremiumCheckout
+} from '../lib/payments'
+
 export default function AccountPage() {
   const [
     user,
@@ -72,6 +76,27 @@ export default function AccountPage() {
     setMessage
   ] =
     useState('')
+
+  const [
+    paymentLoading,
+    setPaymentLoading
+  ] = useState(false)
+
+  async function upgradeToPremium() {
+    setMessage('')
+    setPaymentLoading(true)
+
+    try {
+      await startPremiumCheckout()
+    } catch (error) {
+      setMessage(
+        error instanceof Error
+          ? error.message
+          : 'Payment could not be started.'
+      )
+      setPaymentLoading(false)
+    }
+  }
 
   async function loadEntitlement() {
     const result =
@@ -469,6 +494,17 @@ export default function AccountPage() {
                     Limited introductory
                     price.
                   </span>
+
+                  <button
+                    type="button"
+                    className="button primary full"
+                    onClick={upgradeToPremium}
+                    disabled={paymentLoading}
+                  >
+                    {paymentLoading
+                      ? 'Opening secure checkout...'
+                      : 'Upgrade securely with Paystack'}
+                  </button>
                 </div>
               </div>
             </>

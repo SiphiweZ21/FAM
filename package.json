@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit && tsc -p tsconfig.worker.json"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.112.4",
@@ -20,6 +20,7 @@
     "vite": "latest"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
     "wrangler": "^4.127.1"
