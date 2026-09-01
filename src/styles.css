@@ -3022,3 +3022,63 @@ p {
   font-size: 10px;
   line-height: 1.5;
 }
+
+.account-premium-pricing {
+  display: grid;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.account-standard-price {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 9px;
+}
+
+.account-standard-price del {
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.account-discount-badge {
+  width: fit-content;
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: rgba(255, 204, 102, 0.12);
+  color: var(--warning);
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.account-offer-price {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+}
+
+.account-offer-price > span {
+  margin-right: 6px;
+  color: var(--accent);
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.account-offer-price strong {
+  color: var(--text);
+  font-size: 28px;
+  line-height: 1;
+}
+
+.account-offer-price small {
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.account-payment-note {
+  color: var(--muted);
+  font-size: 8px;
+}

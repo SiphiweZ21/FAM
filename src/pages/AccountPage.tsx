@@ -436,14 +436,40 @@ export default function AccountPage() {
                   </p>
                 </div>
 
-                <strong className="premium-price">
-                  R99 / year
-                </strong>
+                <div className="account-premium-pricing">
+                  <div className="account-standard-price">
+                    <span>
+                      Standard price
+                    </span>
 
-                <span className="account-payment-note">
-                  Premium purchase setup
-                  will be available here.
-                </span>
+                    <del>
+                      R250 / year
+                    </del>
+                  </div>
+
+                  <div className="account-discount-badge">
+                    SAVE R100
+                  </div>
+
+                  <div className="account-offer-price">
+                    <span>
+                      INTRODUCTORY OFFER
+                    </span>
+
+                    <strong>
+                      R150
+                    </strong>
+
+                    <small>
+                      / year
+                    </small>
+                  </div>
+
+                  <span className="account-payment-note">
+                    Limited introductory
+                    price.
+                  </span>
+                </div>
               </div>
             </>
           )}

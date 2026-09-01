@@ -361,7 +361,7 @@ export default function PastPapersPage() {
             className="button full"
           >
             Unlock Premium —
-            R99/year
+            R150/year
           </Link>
         </section>
       ) : (

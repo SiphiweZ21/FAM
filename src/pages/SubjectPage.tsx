@@ -1027,7 +1027,7 @@ export default function SubjectPage() {
           </div>
 
           <strong className="premium-price">
-            R99 / year
+            R150 / year
           </strong>
 
           <Link
