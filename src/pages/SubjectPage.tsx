@@ -311,7 +311,7 @@ export default function SubjectPage() {
     null
 
   return (
-    <div className="stack-lg">
+    <div className="stack-lg subject-page-simple">
       <header className="page-header">
         <span className="subject-icon large">
           {subject.emoji}

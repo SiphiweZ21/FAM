@@ -5,6 +5,9 @@ const CONTENT_BASE_URL =
   import.meta.env.VITE_CONTENT_BASE_URL ||
   DEFAULT_CONTENT_BASE_URL
 
+let pastPapersCache: PastPaperExam[] | null = null
+let pastPapersRequest: Promise<PastPaperExam[]> | null = null
+
 export type PastPaperDocumentType =
   | 'QUESTION'
   | 'MEMO'
@@ -443,9 +446,27 @@ PastPaperExam | null {
 
 export async function getPastPapers():
 Promise<PastPaperExam[]> {
+  if (pastPapersCache) return pastPapersCache
+  if (pastPapersRequest) return pastPapersRequest
+
+  pastPapersRequest = loadPastPapers()
+    .then(papers => {
+      pastPapersCache = papers
+      return papers
+    })
+    .catch(error => {
+      pastPapersRequest = null
+      throw error
+    })
+
+  return pastPapersRequest
+}
+
+async function loadPastPapers(): Promise<PastPaperExam[]> {
   const response =
     await fetch(
-      `${CONTENT_BASE_URL}/past-papers.json`
+      `${CONTENT_BASE_URL}/past-papers.json`,
+      { cache: 'force-cache' }
     )
 
   if (!response.ok) {

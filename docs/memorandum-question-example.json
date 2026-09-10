@@ -1,0 +1,39 @@
+{
+  "id": "mathematics-2025-november-p1-q6-1",
+  "type": "MEMORANDUM_STEPS",
+  "text": "Solve for x: 2x + 6 = 16.",
+  "source": {
+    "year": 2025,
+    "session": "November",
+    "paper": "Paper 1",
+    "questionNumber": "6.1"
+  },
+  "explanation": "Marks are awarded independently for each memorandum step.",
+  "knowledgePoints": 10,
+  "totalMarks": 3,
+  "markingPoints": [
+    {
+      "id": "transpose",
+      "label": "Isolate the term containing x",
+      "marks": 1,
+      "memoAnswer": "2x = 10",
+      "acceptedAnswers": ["10 = 2x"],
+      "feedback": "Subtract 6 from both sides."
+    },
+    {
+      "id": "divide",
+      "label": "Divide both sides by 2",
+      "marks": 1,
+      "memoAnswer": "x = 10 / 2",
+      "acceptedAnswers": ["x=10/2"],
+      "feedback": "Show the division step before the final answer."
+    },
+    {
+      "id": "answer",
+      "label": "State the final answer",
+      "marks": 1,
+      "memoAnswer": "x = 5",
+      "acceptedAnswers": ["5", "x=5"]
+    }
+  ]
+}

@@ -419,7 +419,7 @@ export default function QuizPage() {
         </h1>
 
         <div className="options">
-          {question.options.map(
+          {(question.options ?? []).map(
             (
               option,
               i

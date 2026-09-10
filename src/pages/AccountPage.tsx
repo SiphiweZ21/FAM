@@ -20,7 +20,8 @@ import type {
 } from '@supabase/supabase-js'
 
 import {
-  Link
+  Link,
+  useNavigate
 } from 'react-router-dom'
 
 import {
@@ -37,6 +38,7 @@ import {
 } from '../lib/payments'
 
 export default function AccountPage() {
+  const navigate = useNavigate()
   const [
     user,
     setUser
@@ -238,6 +240,7 @@ export default function AccountPage() {
     }
 
     setPassword('')
+    navigate('/dashboard')
   }
 
   async function signOut() {
@@ -265,7 +268,7 @@ export default function AccountPage() {
 
   if (loading) {
     return (
-      <div className="stack-lg narrow">
+      <div className="stack-lg narrow account-page-unified">
         <p>
           Loading account...
         </p>
@@ -296,7 +299,7 @@ export default function AccountPage() {
         : null
 
     return (
-      <div className="stack-lg narrow">
+      <div className="stack-lg narrow account-page-unified">
         <header className="page-header">
           <span className="eyebrow">
             YOUR ACCOUNT
@@ -447,17 +450,16 @@ export default function AccountPage() {
 
                 <div>
                   <span className="eyebrow">
-                    UNLOCK PREMIUM
+                    PREMIUM OPTION
                   </span>
 
                   <h3>
-                    Full Matric preparation
+                    More practice when you need it
                   </h3>
 
                   <p>
-                    Unlock every mission,
-                    full progress insights
-                    and past exam practice.
+                    Continue on the Free plan, or unlock every mission,
+                    progress insight and past paper when you are ready.
                   </p>
                 </div>
 
@@ -478,7 +480,7 @@ export default function AccountPage() {
 
                   <div className="account-offer-price">
                     <span>
-                      INTRODUCTORY OFFER
+                      12 MONTH ACCESS
                     </span>
 
                     <strong>
@@ -491,8 +493,7 @@ export default function AccountPage() {
                   </div>
 
                   <span className="account-payment-note">
-                    Limited introductory
-                    price.
+                    One payment. No automatic renewal.
                   </span>
 
                   <button
@@ -503,7 +504,7 @@ export default function AccountPage() {
                   >
                     {paymentLoading
                       ? 'Opening secure checkout...'
-                      : 'Upgrade securely with Paystack'}
+                      : 'Choose Premium — R150 for 12 months'}
                   </button>
                 </div>
               </div>
@@ -633,7 +634,7 @@ export default function AccountPage() {
   }
 
   return (
-    <div className="stack-lg narrow">
+    <div className="stack-lg narrow account-page-unified">
       <header className="page-header">
         <span className="eyebrow">
           FAM ACCOUNT

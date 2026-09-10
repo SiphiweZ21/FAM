@@ -22,15 +22,40 @@ export type Mission = {
   contentPath: string
   questionCount: number
   questions: Question[]
+  emoji?: string
+  validationStatus?: 'DRAFT' | 'REVIEWED' | 'VERIFIED'
+  sourceLabel?: string
+  totalMarks?: number
 }
 
 export type Question = {
   id: string
   prompt: string
-  options: string[]
-  answer: number
+  type: 'MULTIPLE_CHOICE' | 'MEMORANDUM_STEPS'
+  options?: string[]
+  answer?: number
   explanation: string
   knowledgePoints?: number
+  source?: ExamQuestionSource
+  markingPoints?: MarkingPoint[]
+  totalMarks: number
+}
+
+export type ExamQuestionSource = {
+  year?: number
+  session?: string
+  paper?: string
+  questionNumber?: string
+}
+
+export type MarkingPoint = {
+  id: string
+  label: string
+  marks: number
+  memoAnswer: string
+  acceptedAnswers?: string[]
+  requiredKeywords?: string[]
+  feedback?: string
 }
 
 export type ManifestMission = {
@@ -53,6 +78,9 @@ export type ManifestMission = {
   contentVersion: number
   status: string
   contentPath: string
+  validationStatus?: 'DRAFT' | 'REVIEWED' | 'VERIFIED'
+  sourceLabel?: string
+  totalMarks?: number
 }
 
 export type ContentManifest = {
@@ -65,13 +93,17 @@ export type ContentManifest = {
 export type RemoteQuestion = {
   id: string
   text: string
-  options: {
+  options?: {
     id: string
     text: string
   }[]
-  correctOptionId: string
+  correctOptionId?: string
   explanation: string
   knowledgePoints: number
+  type?: 'MULTIPLE_CHOICE' | 'MEMORANDUM_STEPS'
+  source?: ExamQuestionSource
+  markingPoints?: MarkingPoint[]
+  totalMarks?: number
 }
 
 export type RemoteMission = {

@@ -1,5 +1,19 @@
 # FutureAfricaMinds Web
 
+## Mobile adventure prototype
+
+The learner mission flow now includes a mobile-first game experience:
+
+- FAM robot mission briefing
+- mission route and available XP preview
+- lives, progress and answer streak HUD
+- instant animated answer feedback
+- final boss challenge
+- mission results, reward chest and unlocked item
+- lightweight game sounds with a persistent sound on/off control
+
+The adventure pages reuse the existing mission content, access rules and learner-progress APIs.
+
 Mobile-first web scaffold for the FAM Grade 12 learning platform.
 
 ## Included

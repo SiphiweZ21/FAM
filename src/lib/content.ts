@@ -12,6 +12,12 @@ const baseUrl = (
   'https://fam-matric-content.pages.dev/v1'
 ).replace(/\/$/, '')
 
+let manifestCache: ContentManifest | null = null
+let manifestRequest: Promise<ContentManifest> | null = null
+let subjectsCache: Subject[] | null = null
+let subjectsRequest: Promise<Subject[]> | null = null
+const missionRequests = new Map<string, Promise<Mission | undefined>>()
+
 const subjectDescriptions: Record<string, string> = {
   accounting: 'Companies, financial statements, analysis and accounting principles.',
   'agricultural-sciences': 'Animal nutrition, production, genetics and agricultural management.',
@@ -40,16 +46,42 @@ function topicName(topicId: string): string {
 }
 
 export async function getManifest(): Promise<ContentManifest> {
-  const response = await fetch(`${baseUrl}/manifest.json`)
+  if (manifestCache) return manifestCache
+  if (manifestRequest) return manifestRequest
 
-  if (!response.ok) {
-    throw new Error(`Unable to load FAM manifest: ${response.status}`)
-  }
+  manifestRequest = fetch(`${baseUrl}/manifest.json`, { cache: 'force-cache' })
+    .then(async response => {
+      if (!response.ok) throw new Error(`Unable to load FAM manifest: ${response.status}`)
+      const manifest = await response.json() as ContentManifest
+      manifestCache = manifest
+      return manifest
+    })
+    .catch(error => {
+      manifestRequest = null
+      throw error
+    })
 
-  return response.json()
+  return manifestRequest
 }
 
 export async function getSubjects(): Promise<Subject[]> {
+  if (subjectsCache) return subjectsCache
+  if (subjectsRequest) return subjectsRequest
+
+  subjectsRequest = buildSubjects()
+    .then(subjects => {
+      subjectsCache = subjects
+      return subjects
+    })
+    .catch(error => {
+      subjectsRequest = null
+      throw error
+    })
+
+  return subjectsRequest
+}
+
+async function buildSubjects(): Promise<Subject[]> {
   const manifest = await getManifest()
 
   const published = manifest.missions.filter(
@@ -98,6 +130,9 @@ export async function getSubjects(): Promise<Subject[]> {
       access: item.access,
       contentPath: item.contentPath,
       questionCount: item.questionCount,
+      validationStatus: item.validationStatus,
+      sourceLabel: item.sourceLabel,
+      totalMarks: item.totalMarks,
       questions: []
     })
   }
@@ -130,6 +165,24 @@ export async function getMission(
   topicId: string,
   missionId: string
 ): Promise<Mission | undefined> {
+  const cacheKey = `${subjectId}:${topicId}:${missionId}`
+  const existingRequest = missionRequests.get(cacheKey)
+  if (existingRequest) return existingRequest
+
+  const request = loadMission(subjectId, topicId, missionId)
+    .catch(error => {
+      missionRequests.delete(cacheKey)
+      throw error
+    })
+  missionRequests.set(cacheKey, request)
+  return request
+}
+
+async function loadMission(
+  subjectId: string,
+  topicId: string,
+  missionId: string
+): Promise<Mission | undefined> {
   const manifest = await getManifest()
 
   const manifestMission: ManifestMission | undefined =
@@ -144,7 +197,8 @@ export async function getMission(
   if (!manifestMission) return undefined
 
   const response = await fetch(
-    `${baseUrl}/${manifestMission.contentPath}`
+    `${baseUrl}/${manifestMission.contentPath}`,
+    { cache: 'force-cache' }
   )
 
   if (!response.ok) {
@@ -154,17 +208,21 @@ export async function getMission(
   const remote: RemoteMission = await response.json()
 
   const questions: Question[] = remote.questions.map(question => {
-    const answerIndex = question.options.findIndex(
+    const answerIndex = (question.options ?? []).findIndex(
       option => option.id === question.correctOptionId
     )
 
     return {
       id: question.id,
       prompt: question.text,
-      options: question.options.map(option => option.text),
-      answer: answerIndex,
+      type: question.type ?? (question.markingPoints?.length ? 'MEMORANDUM_STEPS' : 'MULTIPLE_CHOICE'),
+      options: question.options?.map(option => option.text) ?? [],
+      answer: answerIndex >= 0 ? answerIndex : undefined,
       explanation: question.explanation,
-      knowledgePoints: question.knowledgePoints
+      knowledgePoints: question.knowledgePoints,
+      source: question.source,
+      markingPoints: question.markingPoints,
+      totalMarks: question.totalMarks ?? question.markingPoints?.reduce((total, point) => total + point.marks, 0) ?? 1
     }
   })
 
@@ -177,6 +235,7 @@ export async function getMission(
     access: remote.access,
     contentPath: manifestMission.contentPath,
     questionCount: questions.length,
-    questions
+    questions,
+    emoji: remote.emoji
   }
 }

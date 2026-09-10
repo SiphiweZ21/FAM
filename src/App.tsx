@@ -1,15 +1,16 @@
 import { Route, Routes } from 'react-router-dom'
 import Layout from './components/Layout'
 import AccountPage from './pages/AccountPage'
-import DashboardPage from './pages/DashboardPage'
-import HomePage from './pages/HomePage'
-import MissionPage from './pages/MissionPage'
+import DashboardPage from './pages/DashboardAdventurePage'
+import HomePage from './pages/HomeAdventurePage'
+import MissionPage from './pages/MissionAdventurePage'
 import MySubjectsPage from './pages/MySubjectsPage'
 import PastPapersPage from './pages/PastPapersPage'
 import PaymentCallbackPage from './pages/PaymentCallbackPage'
-import QuizPage from './pages/QuizPage'
-import SubjectPage from './pages/SubjectPage'
+import QuizPage from './pages/QuizAdventurePage'
+import SubjectPage from './pages/SubjectRoutePage'
 import SubjectsPage from './pages/SubjectsPage'
+import TournamentPage from './pages/TournamentPage'
 
 export default function App() {
   return (
@@ -53,6 +54,11 @@ export default function App() {
         <Route
           path="/quiz/:subjectId/:topicId/:missionId"
           element={<QuizPage />}
+        />
+
+        <Route
+          path="/tournament"
+          element={<TournamentPage />}
         />
 
         <Route

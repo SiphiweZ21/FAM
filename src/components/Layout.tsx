@@ -49,17 +49,17 @@ export default function Layout() {
 
         <NavLink to="/dashboard">
           <Gauge size={20} />
-          <span>Dashboard</span>
+          <span>Progress</span>
         </NavLink>
 
         <NavLink to="/subjects">
           <BookOpen size={20} />
-          <span>Learn</span>
+          <span>Subjects</span>
         </NavLink>
 
         <NavLink to="/account">
           <UserRound size={20} />
-          <span>Account</span>
+          <span>Profile</span>
         </NavLink>
       </nav>
     </div>

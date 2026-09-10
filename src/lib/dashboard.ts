@@ -1,3 +1,5 @@
+// src/lib/dashboard.ts
+
 import {
   getSubjects
 } from './content'
@@ -69,6 +71,8 @@ export type DashboardSubject = {
   practiceAverage: number | null
   recentPerformance: number | null
 
+  examReadiness: number | null
+
   topicsStarted: number
   topicsCompleted: number
   topicsRemaining: number
@@ -83,13 +87,6 @@ export type DashboardSubject = {
 
   coverage: number
 
-  /*
-   * This represents progress across
-   * the WHOLE subject.
-   *
-   * Uncompleted missions effectively
-   * contribute 0 until completed.
-   */
   overallSubjectProgress: number
 
   knowledgePoints: number
@@ -434,9 +431,10 @@ function getRecentPerformance(
 export async function getLearnerDashboard():
 Promise<LearnerDashboard | null> {
   const {
-    data: { user }
-  } =
-    await supabase.auth.getUser()
+    data: { session }
+  } = await supabase.auth.getSession()
+
+  const user = session?.user ?? null
 
   if (!user) {
     return null
@@ -674,19 +672,23 @@ Promise<LearnerDashboard | null> {
           )
 
         /*
-         * Overall subject progress:
+         * FAM Exam Readiness V1
          *
-         * Completed mission percentages
-         * are spread across every mission
-         * in the subject.
+         * 70% = performance
+         * 30% = subject coverage
          *
-         * Example:
-         * 9 of 36 missions completed
-         * at an average of 68%.
-         *
-         * Overall progress:
-         * 17%.
+         * This is a study guidance score,
+         * not a prediction of the final
+         * Matric examination result.
          */
+        const examReadiness =
+          practiceAverage !== null
+            ? Math.round(
+                practiceAverage * 0.7 +
+                subjectCoverage * 0.3
+              )
+            : null
+
         const totalProgressPoints =
           subjectProgress.reduce(
             (sum, row) =>
@@ -899,14 +901,6 @@ Promise<LearnerDashboard | null> {
             totalTopics
           )
 
-        /*
-         * A subject target is a whole-subject
-         * goal.
-         *
-         * One free mission is not enough to
-         * meaningfully compare a learner's
-         * progress with that target.
-         */
         const canCalculateTargetProgress =
           accessMode ===
             'PREMIUM' &&
@@ -1003,6 +997,8 @@ Promise<LearnerDashboard | null> {
           practiceAverage,
 
           recentPerformance,
+
+          examReadiness,
 
           topicsStarted,
           topicsCompleted,
