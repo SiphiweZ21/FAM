@@ -1,0 +1,50 @@
+import assert from 'node:assert/strict'
+import { stripTypeScriptTypes } from 'node:module'
+import { readFileSync } from 'node:fs'
+const source = stripTypeScriptTypes(readFileSync('src/lib/auth-flow.ts', 'utf8'))
+const auth = await import('data:text/javascript;base64,' + Buffer.from(source).toString('base64'))
+assert.equal(auth.normaliseEmail('  ADMIN@futureafricaminds.com '), 'admin@futureafricaminds.com')
+for (const email of ['', 'name', 'name@', 'two names@example.com']) assert.equal(auth.validEmail(email), false)
+assert.equal(auth.validEmail('admin@futureafricaminds.com'), true)
+for (const destination of ['https://evil.example', '//evil.example', '/\\evil.example', '/account\n', '/payment/callback', '/accounting']) assert.equal(auth.safeAuthDestination(destination), '/account')
+const next = '/account?returnTo=%2Fgrades%2Fgrade-3%2Fmathematics%2Fpractice%2Faddition-subtraction&packageId=TERM'
+const link = new URL(auth.authRedirect('https://futureafricaminds.com', next))
+assert.equal(link.pathname, '/auth/callback')
+assert.equal(link.searchParams.get('next'), next)
+assert.equal(new URL(auth.authRedirect('https://futureafricaminds.com', next, true)).searchParams.get('action'), 'recovery')
+assert.match(auth.authErrorMessage({ code:'email_not_confirmed' }), /resend/)
+assert.match(auth.authErrorMessage({ code:'invalid_credentials' }), /reset your password/)
+assert.match(auth.authErrorMessage({ status:429 }), /wait/)
+assert.match(auth.authErrorMessage({ message:'Error sending confirmation email' }), /support@futureafricaminds.com/)
+assert.match(auth.authErrorMessage({ message:'Token expired' }), /newest link/)
+assert.doesNotMatch(auth.authErrorMessage({ message:'sensitive server detail' }), /sensitive/)
+process.env.VITE_SUPABASE_URL = 'https://auth-check.example.supabase.co'
+process.env.VITE_SUPABASE_PUBLISHABLE_KEY = 'test-public-key'
+const { createServer } = await import('vite')
+const server = await createServer({ server: { middlewareMode: true }, appType: 'custom' })
+try {
+ const React = await import('react')
+ const {renderToStaticMarkup} = await import('react-dom/server')
+ const {MemoryRouter} = await import('react-router-dom')
+ const { default: AuthPanel } = await server.ssrLoadModule('/src/components/AuthPanel.tsx')
+ const html = renderToStaticMarkup(React.createElement(MemoryRouter, {}, React.createElement(AuthPanel, { hideIntro:true, hideFooter:true })))
+ assert.match(html, /Forgot your password/)
+ assert.match(html, /<form/)
+ assert.match(html, /type="email"/)
+ assert.match(html, /current-password/)
+ assert.doesNotMatch(html, /Matric preparation|YOUR FAM DASHBOARD|Continue as Guest/)
+ assert.match(html, /Welcome to FAM/)
+ assert.match(html, /Account access/)
+ const { default: VerificationNotice } = await server.ssrLoadModule('/src/components/VerificationNotice.tsx')
+ const notice = renderToStaticMarkup(React.createElement(VerificationNotice, { email:'admin@futureafricaminds.com',message:'Registration submitted.',cooldown:60,submitting:false,onResend:()=>{},onBack:()=>{} }))
+ assert.match(notice, /Check your email/)
+ assert.match(notice, /admin@futureafricaminds.com/)
+ assert.match(notice, /Resend email in 60s/)
+ assert.match(notice, /Spam or Junk/)
+ assert.match(notice, /disabled/)
+ const ready = renderToStaticMarkup(React.createElement(VerificationNotice, { email:'learner@example.com',message:'Request accepted.',cooldown:0,submitting:false,onResend:()=>{},onBack:()=>{} }))
+ assert.match(ready, /Resend verification email/)
+ assert.doesNotMatch(ready, /disabled/)
+
+} finally { await server.close() }
+console.log('Auth checks passed: validation, safe confirmation/recovery redirects, purchase context, friendly errors and sign-in form rendering.')

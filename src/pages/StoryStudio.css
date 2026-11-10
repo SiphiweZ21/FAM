@@ -1,0 +1,13 @@
+.fam-story{border:1px solid #b9d8e5;border-radius:20px;padding:20px;margin:22px 0;background:#f7fcff;color:#17324a}.fam-story header{display:flex;justify-content:space-between;gap:12px;align-items:start}.fam-story header small{color:#336c86}.fam-story h2{font-size:1.35rem;margin:6px 0 12px}.fam-story-stage{min-height:220px;background:linear-gradient(140deg,#d9f5ff,#f5e9ff);border-radius:16px;text-align:center;padding:25px 16px;animation:fam-story-enter .6s ease both}.fam-story-art{font-size:clamp(28px,6vw,55px);letter-spacing:5px;line-height:1.7;overflow-wrap:anywhere;animation:fam-story-float 2.5s ease-in-out infinite alternate}.fam-story-stage h3{margin:12px 0 8px}.fam-story-stage p{max-width:620px;margin:auto;line-height:1.6}.fam-story-controls,.fam-story-options{display:flex;gap:9px;flex-wrap:wrap;margin:14px 0}.fam-story button{border:1px solid #8bb9cc;border-radius:10px;padding:10px 13px;background:white;color:#17324a;cursor:pointer}.fam-story button[aria-pressed=true]{background:#0e6684;color:white}.fam-story button:disabled{opacity:.5;cursor:not-allowed}.fam-story-check{padding:15px;background:white;border-radius:14px}.fam-story-submit{background:#0e6684!important;color:white!important}.fam-story-feedback{background:#e1f5e7;padding:12px;border-radius:10px}.fam-story-note{font-size:.8rem;color:#45697c;margin-bottom:0}@keyframes fam-story-enter{from{opacity:.2;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}@keyframes fam-story-float{from{transform:translateY(3px)}to{transform:translateY(-7px)}}@media(prefers-reduced-motion:reduce){.fam-story-stage,.fam-story-art{animation:none}}@media(max-width:600px){.fam-story{padding:12px}.fam-story header{flex-direction:column}.fam-story-controls button{flex:1 1 40%}}
+
+/* Batch 10: original vector teaching guides and accessible visual stage */
+.fam-story-visual{display:flex;align-items:center;justify-content:center;gap:clamp(10px,4vw,32px);margin:0 auto;max-width:700px}
+.fam-guide-character{width:clamp(80px,18vw,130px);height:auto;flex-shrink:0;filter:drop-shadow(0 6px 5px #4563);animation:fam-guide-wave 3s ease-in-out infinite}
+.fam-story-visual .fam-story-art{flex:1;min-width:0}
+@keyframes fam-guide-wave{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+@media(prefers-reduced-motion:reduce){.fam-guide-character{animation:none}}
+@media(max-width:460px){.fam-story-visual{flex-direction:column}.fam-guide-character{width:84px}}
+
+.fam-video-lesson{padding:1rem;border:1px solid #b6ccda;border-radius:16px;margin:1rem 0}
+.fam-video-lesson video{display:block;width:100%;max-width:720px;aspect-ratio:16/9;border-radius:12px;background:#142a43}
+.fam-video-lesson p{font-size:.9rem}

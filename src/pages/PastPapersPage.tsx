@@ -1,3 +1,4 @@
+import { pastPaperSource } from '../data/past-paper-catalogue'
 import {
   BookOpenCheck,
   ExternalLink,
@@ -280,6 +281,7 @@ export default function PastPapersPage() {
           <p>
             {error}
           </p>
+          <a href={pastPaperSource} target="_blank" rel="noopener noreferrer">Open the official DBE paper collection</a>
         </section>
       </div>
     )
@@ -290,6 +292,7 @@ export default function PastPapersPage() {
 
   return (
     <div className="stack-lg">
+      <section className="info-card"><p>Official papers are published by the Department of Basic Education. <a href={pastPaperSource} target="_blank" rel="noopener noreferrer">Browse the DBE collection</a></p><p>Choose the correct language and paper number. Availability varies by subject.</p></section>
       <header className="page-header">
         <span className="eyebrow">
           EXAM PREPARATION
@@ -360,8 +363,7 @@ export default function PastPapersPage() {
             to="/account"
             className="button full"
           >
-            Unlock Premium —
-            R150/year
+            View Premium passes — from R110
           </Link>
         </section>
       ) : (

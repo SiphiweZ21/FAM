@@ -1,9 +1,10 @@
-import { ArrowLeft, ArrowRight, Check, Crown, FileText, Flag, LockKeyhole, Map, Sparkles, Star, Target, Trophy } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Check, Clock3, Crown, FileText, Flag, LockKeyhole, Map, PlayCircle, Sparkles, Star, Target, Trophy } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { getLearnerAccessMode, type LearnerAccessMode } from '../lib/access'
 import { getSubject } from '../lib/content'
 import { getSubjectAnalytics, type SubjectAnalytics } from '../lib/subject-analytics'
+import { getTopicLesson } from '../lib/topic-lessons'
 import type { Subject } from '../types'
 
 const worldThemes = ['cyan', 'purple', 'gold', 'coral', 'green']
@@ -19,13 +20,32 @@ export default function SubjectAdventurePage() {
 
   useEffect(() => {
     if (!subjectId) { setNotFound(true); setLoading(false); return }
-    Promise.all([getSubject(subjectId), getLearnerAccessMode(), getSubjectAnalytics(subjectId)])
-      .then(([subjectResult, accessResult, analyticsResult]) => {
+
+    let active = true
+
+    getSubject(subjectId)
+      .then(subjectResult => {
+        if (!active) return
         if (!subjectResult) return setNotFound(true)
-        setSubject(subjectResult); setAccessMode(accessResult); setAnalytics(analyticsResult)
+        setSubject(subjectResult)
       })
-      .catch(error => { console.error(error); setNotFound(true) })
-      .finally(() => setLoading(false))
+      .catch(error => {
+        console.error(error)
+        if (active) setNotFound(true)
+      })
+      .finally(() => {
+        if (active) setLoading(false)
+      })
+
+    Promise.all([getLearnerAccessMode(), getSubjectAnalytics(subjectId)])
+      .then(([accessResult, analyticsResult]) => {
+        if (!active) return
+        setAccessMode(accessResult)
+        setAnalytics(analyticsResult)
+      })
+      .catch(error => console.error('Unable to load learner progress:', error))
+
+    return () => { active = false }
   }, [subjectId])
 
   const totals = useMemo(() => {
@@ -34,10 +54,16 @@ export default function SubjectAdventurePage() {
     return { total, completed, percentage: total ? Math.round((completed / total) * 100) : 0 }
   }, [subject, analytics])
 
+  const orderedTopics = useMemo(() => {
+    if (!subject) return []
+
+    return [...subject.topics]
+  }, [subject])
+
   if (loading) return <div className="adventure-loading"><p>Drawing your subject map...</p></div>
   if (notFound || !subject || !subjectId) return <Navigate to="/subjects" replace />
   const isPremium = accessMode === 'PREMIUM'
-  const nextMission = subject.topics
+  const nextMission = orderedTopics
     .flatMap(topic => topic.missions.map(mission => ({
       key: `${topic.id}:${mission.id}`,
       accessible: !mission.premium || isPremium,
@@ -82,10 +108,11 @@ export default function SubjectAdventurePage() {
       </div>
 
       <div className="topic-worlds">
-        {subject.topics.map((topic, topicIndex) => {
+        {orderedTopics.map((topic, topicIndex) => {
           const topicAnalytics = analytics?.topics.find(item => item.topicId === topic.id)
           const completedCount = topicAnalytics?.completedMissions ?? 0
           const theme = worldThemes[topicIndex % worldThemes.length]
+          const lesson = getTopicLesson(subject.id, topic.id, topic.name)
           return (
             <section className={`topic-world world-${theme}`} key={topic.id}>
               <div className="world-cloud cloud-one" /><div className="world-cloud cloud-two" />
@@ -93,6 +120,17 @@ export default function SubjectAdventurePage() {
                 <span className="world-number">WORLD {String(topicIndex + 1).padStart(2, '0')}</span>
                 <div className="world-title"><span>{worldIcons[topicIndex % worldIcons.length]}</span><div><h2>{topic.name}</h2><p>{completedCount}/{topic.missions.length} missions mastered</p></div></div>
               </header>
+              <div className="topic-learning-choices">
+                <Link className="topic-lesson-card" to={`/subjects/${subject.id}/${topic.id}/lesson`}>
+                  <span className="topic-lesson-visual"><PlayCircle size={34} /><small>PLAY</small></span>
+                  <span className="topic-lesson-copy">
+                    <span className="topic-lesson-label">OPTIONAL VIDEO LESSON</span>
+                    <strong>{lesson.title}</strong>
+                    <small>{lesson.description}</small>
+                    <span className="topic-lesson-meta"><Clock3 size={13} /> {lesson.durationMinutes ? `${lesson.durationMinutes} min` : 'Worked examples'} <b>{lesson.videoUrl ? 'Watch lesson' : 'Read revision'} <ArrowRight size={12} /></b></span>
+                  </span>
+                </Link>
+              </div>
               <div className="world-path">
                 {topic.missions.map((mission, missionIndex) => {
                   const missionAnalytics = topicAnalytics?.missions.find(item => item.missionId === mission.id)
@@ -123,7 +161,7 @@ export default function SubjectAdventurePage() {
       </div>
 
       {!isPremium && (
-        <section className="map-premium-card"><Sparkles size={25} /><span className="eyebrow">UNLOCK THE FULL MAP</span><h2>Continue the {subject.name} Quest</h2><p>Open every topic world, boss challenge, past paper and progress insight for 12 months.</p><strong>R150 / year</strong><Link className="button primary full mission-launch" to="/account">Unlock all worlds <ArrowRight size={18} /></Link></section>
+        <section className="map-premium-card"><Sparkles size={25} /><span className="eyebrow">UNLOCK THE FULL MAP</span><h2>Continue the {subject.name} Quest</h2><p>Open every topic world, boss challenge, past paper and progress insight.</p><strong>Premium from R110</strong><Link className="button primary full mission-launch" to="/account">Choose Monthly or Term Pass <ArrowRight size={18} /></Link></section>
       )}
       <div className="map-end-marker"><Target size={22} /><span>Your exam goal is waiting</span></div>
     </div>

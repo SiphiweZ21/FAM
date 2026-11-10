@@ -78,6 +78,7 @@ export type ManifestMission = {
   contentVersion: number
   status: string
   contentPath: string
+  checksum?: string
   validationStatus?: 'DRAFT' | 'REVIEWED' | 'VERIFIED'
   sourceLabel?: string
   totalMarks?: number

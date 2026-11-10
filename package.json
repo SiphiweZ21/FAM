@@ -7,7 +7,15 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "typecheck": "tsc --noEmit && tsc -p tsconfig.worker.json"
+    "typecheck": "tsc --noEmit && tsc -p tsconfig.worker.json",
+    "dev:api": "wrangler dev --port 8787",
+    "content:prepare": "node scripts/prepare-grade-content.cjs",
+    "test:premium": "npm run build && wrangler deploy --dry-run --outdir .verification && node scripts/test-premium.mjs && node scripts/test-paystack.mjs",
+    "test:auth": "node scripts/test-auth-flow.mjs",
+    "review:lesson:ai": "node scripts/review-lesson-ai.mjs",
+    "quality:gate": "node scripts/quality-gate.mjs",
+    "improve:lesson:ai": "node scripts/improve-lesson-ai.mjs",
+    "improve:lesson:check": "node scripts/check-improvements.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.112.4",
@@ -16,13 +24,13 @@
     "react": "latest",
     "react-dom": "latest",
     "react-router-dom": "latest",
-    "typescript": "latest",
-    "vite": "latest"
+    "typescript": "latest"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
+    "vite": "^8.3.7",
     "wrangler": "^4.127.1"
   }
 }

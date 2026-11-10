@@ -17,6 +17,57 @@ let manifestRequest: Promise<ContentManifest> | null = null
 let subjectsCache: Subject[] | null = null
 let subjectsRequest: Promise<Subject[]> | null = null
 const missionRequests = new Map<string, Promise<Mission | undefined>>()
+const missionManifestIndex = new Map<string, ManifestMission>()
+const manifestCacheKey = 'fam-content-manifest-v1'
+const manifestCacheTtlMs = 5 * 60 * 1000
+
+type StoredManifest = {
+  cachedAt: number
+  manifest: ContentManifest
+}
+
+function indexManifest(manifest: ContentManifest) {
+  missionManifestIndex.clear()
+  for (const mission of manifest.missions) {
+    missionManifestIndex.set(
+      `${mission.subjectId}:${mission.topicId}:${mission.id}`,
+      mission
+    )
+  }
+}
+
+function readStoredManifest(): ContentManifest | null {
+  try {
+    const stored = localStorage.getItem(manifestCacheKey)
+    if (!stored) return null
+
+    const parsed = JSON.parse(stored) as StoredManifest
+    if (
+      !parsed.manifest?.missions ||
+      Date.now() - parsed.cachedAt > manifestCacheTtlMs
+    ) {
+      localStorage.removeItem(manifestCacheKey)
+      return null
+    }
+
+    indexManifest(parsed.manifest)
+    return parsed.manifest
+  } catch {
+    localStorage.removeItem(manifestCacheKey)
+    return null
+  }
+}
+
+function storeManifest(manifest: ContentManifest) {
+  try {
+    localStorage.setItem(manifestCacheKey, JSON.stringify({
+      cachedAt: Date.now(),
+      manifest
+    } satisfies StoredManifest))
+  } catch {
+    // Content still works when storage is unavailable or full.
+  }
+}
 
 const subjectDescriptions: Record<string, string> = {
   accounting: 'Companies, financial statements, analysis and accounting principles.',
@@ -38,8 +89,14 @@ const subjectDescriptions: Record<string, string> = {
   'isizulu-fal': 'IsiZulu First Additional Language revision and examination preparation.'
 }
 
-function topicName(topicId: string): string {
-  return topicId
+function topicName(mission: ManifestMission): string {
+  const title = mission.title
+    .replace(/\s+(Foundations|Applications|Exam Practice)$/i, '')
+    .trim()
+
+  if (title && title !== mission.title) return title
+
+  return mission.topicId
     .split('-')
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ')
@@ -49,11 +106,24 @@ export async function getManifest(): Promise<ContentManifest> {
   if (manifestCache) return manifestCache
   if (manifestRequest) return manifestRequest
 
-  manifestRequest = fetch(`${baseUrl}/manifest.json`, { cache: 'force-cache' })
+  const storedManifest = readStoredManifest()
+  if (storedManifest) {
+    manifestCache = storedManifest
+    return storedManifest
+  }
+
+  // A five-minute version bucket avoids stale releases without defeating the
+  // browser and CDN cache on every page reload.
+  const cacheVersion = Math.floor(Date.now() / manifestCacheTtlMs)
+  const manifestUrl = `${baseUrl}/manifest.json?v=${cacheVersion}`
+
+  manifestRequest = fetch(manifestUrl, { cache: 'default' })
     .then(async response => {
       if (!response.ok) throw new Error(`Unable to load FAM manifest: ${response.status}`)
       const manifest = await response.json() as ContentManifest
       manifestCache = manifest
+      indexManifest(manifest)
+      storeManifest(manifest)
       return manifest
     })
     .catch(error => {
@@ -114,7 +184,7 @@ async function buildSubjects(): Promise<Subject[]> {
     if (!topic) {
       topic = {
         id: item.topicId,
-        name: topicName(item.topicId),
+        name: topicName(item),
         missions: []
       }
 
@@ -140,8 +210,8 @@ async function buildSubjects(): Promise<Subject[]> {
   for (const subject of subjectMap.values()) {
     for (const topic of subject.topics) {
       topic.missions.sort((a, b) => {
-        const aManifest = published.find(m => m.id === a.id)
-        const bManifest = published.find(m => m.id === b.id)
+        const aManifest = missionManifestIndex.get(`${subject.id}:${topic.id}:${a.id}`)
+        const bManifest = missionManifestIndex.get(`${subject.id}:${topic.id}:${b.id}`)
 
         return (aManifest?.order ?? 0) - (bManifest?.order ?? 0)
       })
@@ -185,21 +255,23 @@ async function loadMission(
 ): Promise<Mission | undefined> {
   const manifest = await getManifest()
 
-  const manifestMission: ManifestMission | undefined =
-    manifest.missions.find(
-      mission =>
-        mission.subjectId === subjectId &&
-        mission.topicId === topicId &&
-        mission.id === missionId &&
-        mission.status === 'PUBLISHED'
-    )
-
-  if (!manifestMission) return undefined
-
-  const response = await fetch(
-    `${baseUrl}/${manifestMission.contentPath}`,
-    { cache: 'force-cache' }
+  const manifestMission = missionManifestIndex.get(
+    `${subjectId}:${topicId}:${missionId}`
   )
+
+  if (!manifestMission || manifestMission.status !== 'PUBLISHED') return undefined
+
+  const contentUrl = new URL(
+    `${baseUrl}/${manifestMission.contentPath}`
+  )
+
+  if (manifestMission.checksum) {
+    contentUrl.searchParams.set('v', manifestMission.checksum)
+  }
+
+  const response = await fetch(contentUrl.toString(), {
+    cache: 'force-cache'
+  })
 
   if (!response.ok) {
     throw new Error(`Unable to load mission: ${response.status}`)

@@ -1,10 +1,11 @@
+import SelectedPremiumCheckout from '../components/SelectedPremiumCheckout'
+import {safeLearningReturn} from '../lib/grade-premium'
+import {useSearchParams} from 'react-router-dom'
 import {
   BookOpen,
   CheckCircle2,
   ChevronRight,
   Gauge,
-  GraduationCap,
-  LockKeyhole,
   LogOut,
   Target,
   UserRound
@@ -34,11 +35,18 @@ import {
 } from '../lib/supabase'
 
 import {
-  startPremiumCheckout
+  startPremiumCheckout,
+  type PremiumPackageId
 } from '../lib/payments'
+import AuthPanel from '../components/AuthPanel'
+import LegacyLearningRecovery from '../components/LegacyLearningRecovery'
+import PremiumPackageCards from '../components/PremiumPackageCards'
 
 export default function AccountPage() {
   const navigate = useNavigate()
+  const [purchaseParams]=useSearchParams()
+  const selectedPackage=(["MONTHLY","TERM"].includes(purchaseParams.get('packageId')||'')?purchaseParams.get('packageId'):null) as PremiumPackageId|null
+  const learningReturnTo=safeLearningReturn(purchaseParams.get('returnTo'))
   const [
     user,
     setUser
@@ -56,18 +64,6 @@ export default function AccountPage() {
     )
 
   const [
-    email,
-    setEmail
-  ] =
-    useState('')
-
-  const [
-    password,
-    setPassword
-  ] =
-    useState('')
-
-  const [
     loading,
     setLoading
   ] =
@@ -82,21 +78,21 @@ export default function AccountPage() {
   const [
     paymentLoading,
     setPaymentLoading
-  ] = useState(false)
+  ] = useState<PremiumPackageId | null>(null)
 
-  async function upgradeToPremium() {
+  async function upgradeToPremium(packageId: PremiumPackageId, paymentMethod: 'CAPITECPAY'|'CARD' = 'CAPITECPAY') {
     setMessage('')
-    setPaymentLoading(true)
+    setPaymentLoading(packageId)
 
     try {
-      await startPremiumCheckout()
+      await startPremiumCheckout(packageId,learningReturnTo||undefined,paymentMethod)
     } catch (error) {
       setMessage(
         error instanceof Error
           ? error.message
           : 'Payment could not be started.'
       )
-      setPaymentLoading(false)
+      setPaymentLoading(null)
     }
   }
 
@@ -176,73 +172,6 @@ export default function AccountPage() {
       subscription.unsubscribe()
   }, [])
 
-  async function signUp() {
-    setMessage('')
-
-    if (
-      !email ||
-      !password
-    ) {
-      setMessage(
-        'Enter your email and password.'
-      )
-      return
-    }
-
-    const {
-      error
-    } =
-      await supabase.auth
-        .signUp({
-          email,
-          password
-        })
-
-    if (error) {
-      setMessage(
-        error.message
-      )
-      return
-    }
-
-    setMessage(
-      'Account created. Check your email if confirmation is required.'
-    )
-  }
-
-  async function signIn() {
-    setMessage('')
-
-    if (
-      !email ||
-      !password
-    ) {
-      setMessage(
-        'Enter your email and password.'
-      )
-      return
-    }
-
-    const {
-      error
-    } =
-      await supabase.auth
-        .signInWithPassword({
-          email,
-          password
-        })
-
-    if (error) {
-      setMessage(
-        error.message
-      )
-      return
-    }
-
-    setPassword('')
-    navigate('/dashboard')
-  }
-
   async function signOut() {
     setMessage('')
 
@@ -259,8 +188,6 @@ export default function AccountPage() {
       return
     }
 
-    setEmail('')
-    setPassword('')
     setMessage(
       'Signed out successfully.'
     )
@@ -300,6 +227,7 @@ export default function AccountPage() {
 
     return (
       <div className="stack-lg narrow account-page-unified">
+        <LegacyLearningRecovery />
         <header className="page-header">
           <span className="eyebrow">
             YOUR ACCOUNT
@@ -310,8 +238,7 @@ export default function AccountPage() {
           </h1>
 
           <p>
-            Manage your learning,
-            subjects and FAM access.
+            {selectedPackage?'Your account is ready. Complete your payment below to unlock your lesson.':'Manage your learning, subjects and FAM access.'}
           </p>
         </header>
 
@@ -341,6 +268,7 @@ export default function AccountPage() {
           </div>
         </section>
 
+        {selectedPackage&&learningReturnTo&&(isPremium?<section className="account-plan-card"><h2>Your Premium access is active</h2><Link className="button primary full" to={learningReturnTo}>Continue to your lesson</Link></section>:<SelectedPremiumCheckout packageId={selectedPackage} returnTo={learningReturnTo}/>)}
         <section className="account-plan-card">
           <div className="account-plan-heading">
             <div>
@@ -442,12 +370,6 @@ export default function AccountPage() {
               </div>
 
               <div className="account-premium-upgrade">
-                <div className="account-premium-upgrade-icon">
-                  <LockKeyhole
-                    size={20}
-                  />
-                </div>
-
                 <div>
                   <span className="eyebrow">
                     PREMIUM OPTION
@@ -462,51 +384,7 @@ export default function AccountPage() {
                     progress insight and past paper when you are ready.
                   </p>
                 </div>
-
-                <div className="account-premium-pricing">
-                  <div className="account-standard-price">
-                    <span>
-                      Standard price
-                    </span>
-
-                    <del>
-                      R250 / year
-                    </del>
-                  </div>
-
-                  <div className="account-discount-badge">
-                    SAVE R100
-                  </div>
-
-                  <div className="account-offer-price">
-                    <span>
-                      12 MONTH ACCESS
-                    </span>
-
-                    <strong>
-                      R150
-                    </strong>
-
-                    <small>
-                      / year
-                    </small>
-                  </div>
-
-                  <span className="account-payment-note">
-                    One payment. No automatic renewal.
-                  </span>
-
-                  <button
-                    type="button"
-                    className="button primary full"
-                    onClick={upgradeToPremium}
-                    disabled={paymentLoading}
-                  >
-                    {paymentLoading
-                      ? 'Opening secure checkout...'
-                      : 'Choose Premium — R150 for 12 months'}
-                  </button>
-                </div>
+                <PremiumPackageCards onSelect={upgradeToPremium} loadingPackage={paymentLoading} />
               </div>
             </>
           )}
@@ -633,119 +511,15 @@ export default function AccountPage() {
     )
   }
 
-  return (
-    <div className="stack-lg narrow account-page-unified">
-      <header className="page-header">
-        <span className="eyebrow">
-          FAM ACCOUNT
-        </span>
-
-        <h1>
-          Learn. Practise. Improve.
-        </h1>
-
-        <p>
-          Sign in to save your learning
-          progress, scores, subjects and
-          revision history.
-        </p>
-      </header>
-
-      <section className="account-login-card">
-        <div className="account-login-heading">
-          <div className="account-login-icon">
-            <GraduationCap
-              size={24}
-            />
-          </div>
-
-          <div>
-            <span className="eyebrow">
-              LEARNER SIGN IN
-            </span>
-
-            <h2>
-              Continue your Matric
-              preparation
-            </h2>
-          </div>
-        </div>
-
-        <div className="account-form">
-          <label>
-            <span>
-              Email
-            </span>
-
-            <input
-              type="email"
-              value={email}
-              onChange={
-                event =>
-                  setEmail(
-                    event.target.value
-                  )
-              }
-              placeholder="learner@example.com"
-              autoComplete="email"
-            />
-          </label>
-
-          <label>
-            <span>
-              Password
-            </span>
-
-            <input
-              type="password"
-              value={password}
-              onChange={
-                event =>
-                  setPassword(
-                    event.target.value
-                  )
-              }
-              placeholder="Minimum 6 characters"
-              autoComplete="current-password"
-            />
-          </label>
-        </div>
-
-        <button
-          type="button"
-          className="button primary full"
-          onClick={signIn}
-        >
-          Sign in
-        </button>
-
-        <button
-          type="button"
-          className="button secondary full"
-          onClick={signUp}
-        >
-          Create learner account
-        </button>
-
-        {message && (
-          <p className="account-message">
-            {message}
-          </p>
-        )}
-      </section>
-
-      <section className="account-free-note">
-        <strong>
-          Start for free
-        </strong>
-
-        <p>
-          Create an account, select your
-          subjects, set your target marks
-          and begin your free Grade 12
-          missions.
-        </p>
-      </section>
-    </div>
-  )
+  const purchaseIntent=Boolean(selectedPackage||learningReturnTo)
+  return <>
+    <AuthPanel
+      hideIntro
+      hideFooter
+      title={purchaseIntent?'Continue your Premium purchase':undefined}
+      formDescription={selectedPackage?(selectedPackage==='TERM'?'Selected: Term Pass — R200 for 3 months.':'Selected: Monthly Pass — R110 for 30 days.'):undefined}
+      signInLabel={purchaseIntent?'Sign in to continue to payment':undefined}
+      onAuthenticated={() => {if(!selectedPackage)navigate(learningReturnTo||'/dashboard')}}
+    />
+  </>
 }

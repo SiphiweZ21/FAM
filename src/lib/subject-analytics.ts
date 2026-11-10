@@ -167,10 +167,12 @@ export async function getSubjectAnalytics(
 
   const {
     data: {
-      user
+      session
     }
   } =
-    await supabase.auth.getUser()
+    await supabase.auth.getSession()
+
+  const user = session?.user ?? null
 
   let progressRows:
     ProgressRow[] = []
