@@ -5,6 +5,9 @@ import { getLearnerAccessMode, type LearnerAccessMode } from '../lib/access'
 import { getMission } from '../lib/content'
 import { playGameSound } from '../lib/game-audio'
 import type { Mission } from '../types'
+import { supabase } from '../lib/supabase'
+import { startPremiumCheckout, type PremiumPackageId } from '../lib/payments'
+import PremiumPackageCards from '../components/PremiumPackageCards'
 
 export default function MissionAdventurePage() {
   const { subjectId, topicId, missionId } = useParams()
@@ -12,6 +15,9 @@ export default function MissionAdventurePage() {
   const [accessMode, setAccessMode] = useState<LearnerAccessMode>('FREE')
   const [loading, setLoading] = useState(true)
   const [notFound, setNotFound] = useState(false)
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [paymentLoading, setPaymentLoading] = useState<PremiumPackageId | null>(null)
+  const [paymentMessage, setPaymentMessage] = useState('')
 
   useEffect(() => {
     if (!subjectId || !topicId || !missionId) {
@@ -19,11 +25,12 @@ export default function MissionAdventurePage() {
       setLoading(false)
       return
     }
-    Promise.all([getMission(subjectId, topicId, missionId), getLearnerAccessMode()])
-      .then(([missionResult, accessResult]) => {
+    Promise.all([getMission(subjectId, topicId, missionId), getLearnerAccessMode(), supabase.auth.getSession()])
+      .then(([missionResult, accessResult, sessionResult]) => {
         if (!missionResult) return setNotFound(true)
         setMission(missionResult)
         setAccessMode(accessResult)
+        setIsAuthenticated(Boolean(sessionResult.data.session))
       })
       .catch(error => { console.error(error); setNotFound(true) })
       .finally(() => setLoading(false))
@@ -34,6 +41,16 @@ export default function MissionAdventurePage() {
 
   const missionIsLocked = mission.premium && accessMode !== 'PREMIUM'
   const maximumPoints = mission.questions.reduce((total, question) => total + (question.knowledgePoints ?? 10), 0)
+
+  async function upgrade(packageId: PremiumPackageId, paymentMethod: 'CAPITECPAY'|'CARD' = 'CAPITECPAY') {
+    setPaymentLoading(packageId)
+    setPaymentMessage('')
+    try { await startPremiumCheckout(packageId,undefined,paymentMethod) }
+    catch (error) {
+      setPaymentMessage(error instanceof Error ? error.message : 'Payment could not be started.')
+      setPaymentLoading(null)
+    }
+  }
 
   return (
     <div className="mission-adventure narrow">
@@ -62,9 +79,22 @@ export default function MissionAdventurePage() {
         </div>
       </section>
       {missionIsLocked ? (
-        <section className="premium-card adventure-lock"><LockKeyhole size={30} /><div><span className="eyebrow">PREMIUM MISSION</span><h2>Unlock this adventure</h2><p>Premium opens every mission, past paper and personalised progress insight for 12 months.</p></div><strong className="premium-price">R150 / year</strong><Link className="button primary full" to="/account">Unlock Premium</Link></section>
+        <section className="premium-card adventure-lock locked-offers">
+          <LockKeyhole size={30} />
+          <div><span className="eyebrow">PREMIUM MISSION</span><h2>Unlock this adventure</h2><p>Premium opens every mission, past paper and personalised progress insight.</p></div>
+          {!isAuthenticated ? <>
+            <div className="free-account-offer">
+              <span className="eyebrow">RECOMMENDED NEXT STEP</span>
+              <h3>Create a free account</h3>
+              <ul><li>Protect current progress</li><li>Continue on another device</li><li>Enable parent monitoring</li><li>Keep access to one free mission per subject</li></ul>
+              <Link className="button primary full" to="/account">Create Free Account</Link>
+            </div>
+            <div className="premium-access-preview"><h3>Or explore FAM Premium</h3><PremiumPackageCards compact /></div>
+          </> : <PremiumPackageCards onSelect={upgrade} loadingPackage={paymentLoading} />}
+          {paymentMessage && <p className="progress-note error">{paymentMessage}</p>}
+        </section>
       ) : (
-        <div className="mission-launch-panel"><div><CheckCircle2 size={18} /><span>Your progress will be saved</span></div><Link className="button primary full mission-launch" to={`/quiz/${subjectId}/${topicId}/${missionId}`} onClick={() => playGameSound('start')}>Start adventure <ArrowRight size={19} /></Link></div>
+        <div className="mission-launch-panel"><div><CheckCircle2 size={18} /><span>{'Sign in to save progress to your account'}</span></div><Link className="button primary full mission-launch" to={`/quiz/${subjectId}/${topicId}/${missionId}`} onClick={() => playGameSound('start')}>Start adventure <ArrowRight size={19} /></Link></div>
       )}
     </div>
   )

@@ -1,3 +1,4 @@
+import { pastPaperCatalogue } from '../data/past-paper-catalogue'
 const DEFAULT_CONTENT_BASE_URL =
   'https://fam-matric-content.pages.dev/v1'
 
@@ -251,7 +252,7 @@ function makeDocument(
   url: string
 ):
 PastPaperDocument | null {
-  if (!url) {
+  if (!/^https:\/\//i.test(url)) {
     return null
   }
 
@@ -384,7 +385,7 @@ PastPaperExam | null {
           record.file_url
         )
 
-      if (!url) {
+      if (!/^https:\/\//i.test(url)) {
         return
       }
 
@@ -430,7 +431,7 @@ PastPaperExam | null {
     }
   )
 
-  if (!subjectId) {
+  if (!subjectId || !Number.isInteger(year) || year < 2000 || !documents.length) {
     return null
   }
 
@@ -449,7 +450,7 @@ Promise<PastPaperExam[]> {
   if (pastPapersCache) return pastPapersCache
   if (pastPapersRequest) return pastPapersRequest
 
-  pastPapersRequest = loadPastPapers()
+  pastPapersRequest = loadPastPapers().then(papers => papers.length ? papers : pastPaperCatalogue).catch(() => pastPaperCatalogue)
     .then(papers => {
       pastPapersCache = papers
       return papers
@@ -466,7 +467,7 @@ async function loadPastPapers(): Promise<PastPaperExam[]> {
   const response =
     await fetch(
       `${CONTENT_BASE_URL}/past-papers.json`,
-      { cache: 'force-cache' }
+      { cache: 'no-cache', signal: AbortSignal.timeout(8000) }
     )
 
   if (!response.ok) {
@@ -478,6 +479,8 @@ async function loadPastPapers(): Promise<PastPaperExam[]> {
   const payload:
     unknown =
     await response.json()
+
+  if (!Array.isArray(payload) && !(payload && typeof payload === 'object' && Array.isArray((payload as {papers?: unknown}).papers))) throw new Error('Invalid paper catalogue')
 
   const rows =
     Array.isArray(

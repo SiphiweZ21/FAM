@@ -1,4 +1,14 @@
 import { supabase } from './supabase'
+import { deleteGuestProfile, getGuestProfiles, type GuestMissionProgress } from './guest'
+
+export type GuestTransferReceipt = {
+  nickname: string
+  gradeId: string
+  transferredAt: string
+  missions: GuestMissionProgress[]
+}
+
+const guestTransferReceiptKey = 'fam-guest-transfer-receipt-v1'
 
 type SaveProgressInput = {
   subjectId: string
@@ -8,6 +18,7 @@ type SaveProgressInput = {
   totalQuestions: number
   percentage: number
   knowledgePoints: number
+  mastered: boolean
 }
 
 export async function saveLearnerProgress(
@@ -17,12 +28,7 @@ export async function saveLearnerProgress(
     data: { user }
   } = await supabase.auth.getUser()
 
-  if (!user) {
-    return {
-      saved: false,
-      reason: 'NOT_SIGNED_IN'
-    }
-  }
+  if (!user) return { saved: false, local: false, reason: 'NOT_SIGNED_IN' }
 
   const now = new Date().toISOString()
 
@@ -76,8 +82,10 @@ export async function saveLearnerProgress(
     throw existingProgressError
   }
 
+  const alreadyMastered = Boolean(existingProgress?.first_completed_at)
+  const mastered = input.mastered || alreadyMastered
   const firstCompletedAt =
-    existingProgress?.first_completed_at ?? now
+    existingProgress?.first_completed_at ?? (input.mastered ? now : null)
 
   /*
    * 3. Keep learner_progress as the latest
@@ -97,7 +105,7 @@ export async function saveLearnerProgress(
         percentage: input.percentage,
         knowledge_points: input.knowledgePoints,
 
-        completed: true,
+        completed: mastered,
 
         first_completed_at: firstCompletedAt,
         last_attempted_at: now,
@@ -114,6 +122,45 @@ export async function saveLearnerProgress(
   }
 
   return {
-    saved: true
+    saved: true,
+    local: false
   }
+}
+
+export async function migrateLegacyProgress(profileId: string) {
+  const profile = getGuestProfiles().find(item => item.id === profileId)
+  if (!profile || profile.gradeId !== 'grade-12' || profile.progress.length === 0) return { migrated: 0, receipt: null as GuestTransferReceipt | null }
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return { migrated: 0, receipt: null as GuestTransferReceipt | null }
+  const transferred: GuestMissionProgress[] = []
+  for (const item of profile.progress) {
+    const { data: existing, error } = await supabase.from('learner_progress')
+      .select('percentage')
+      .eq('user_id', user.id)
+      .eq('subject_id', item.subjectId)
+      .eq('topic_id', item.topicId)
+      .eq('mission_id', item.missionId)
+      .maybeSingle()
+    if (error) throw error
+    if (!existing || Number(existing.percentage) < item.percentage) {
+      const result = await saveLearnerProgress(item)
+      if (!result.saved) throw new Error('A guest mission could not be transferred.')
+    }
+    transferred.push(item)
+  }
+  const receipt: GuestTransferReceipt = { nickname: profile.nickname, gradeId: profile.gradeId, transferredAt: new Date().toISOString(), missions: transferred }
+  sessionStorage.setItem(guestTransferReceiptKey, JSON.stringify(receipt))
+  deleteGuestProfile(profile.id)
+  return { migrated: transferred.length, receipt }
+}
+
+export function getGuestTransferReceipt(): GuestTransferReceipt | null {
+  try {
+    const stored = sessionStorage.getItem(guestTransferReceiptKey)
+    return stored ? JSON.parse(stored) as GuestTransferReceipt : null
+  } catch { return null }
+}
+
+export function clearGuestTransferReceipt() {
+  sessionStorage.removeItem(guestTransferReceiptKey)
 }

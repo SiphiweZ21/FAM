@@ -1,0 +1,28 @@
+{
+  "lessonId": "g4-fractions-guided",
+  "version": "14.0.0",
+  "publicationStatus": "PILOT_REVIEW",
+  "publicReleaseApproved": false,
+  "requirements": [
+    "Verified CAPS source citation and grade mapping",
+    "Deterministic maths and answer validation",
+    "Independent AI review using separately supplied reviewer model",
+    "Accessibility and caption verification",
+    "Media integrity and playback tests",
+    "No unresolved critical findings"
+  ],
+  "qualityGate": {
+    "policyVersion": "1.0",
+    "requiredEvidence": [
+      "caps_source",
+      "subject_accuracy",
+      "answer_validation",
+      "accessibility",
+      "media_integrity",
+      "independent_ai_review"
+    ],
+    "minimumIndependentAiScore": 0.9,
+    "requiresHumanApproval": false,
+    "evidencePath": "docs/quality-evidence/g4-fractions-guided.json"
+  }
+}

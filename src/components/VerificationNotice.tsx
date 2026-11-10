@@ -1,0 +1,6 @@
+import { MailCheck } from 'lucide-react'
+
+type Props = { email: string; message: string; cooldown: number; submitting: boolean; onResend: () => void; onBack: () => void }
+export default function VerificationNotice({ email, message, cooldown, submitting, onResend, onBack }: Props) {
+  return <div className="auth-verification-card" role="status" aria-live="polite"><MailCheck size={40} aria-hidden="true" /><h2>Check your email</h2><p className="verification-address">{email}</p><p>{message}</p><ol><li>Open your inbox and look for the FAM verification email.</li><li>Click the confirmation link to verify your account.</li><li>Return to FAM to continue learning or finish your purchase.</li></ol><p>Allow a few minutes and check Spam or Junk. If this address already has an account, sign in or reset your password instead.</p><button type="button" className="button primary full" disabled={submitting || cooldown > 0} onClick={onResend}>{submitting ? 'Requesting email...' : cooldown > 0 ? `Resend email in ${cooldown}s` : 'Resend verification email'}</button><button type="button" className="button secondary full" disabled={submitting} onClick={onBack}>Back to sign in / change email</button><a href="mailto:support@futureafricaminds.com?subject=FAM%20email%20verification">Need help? Contact FAM Support</a></div>
+}

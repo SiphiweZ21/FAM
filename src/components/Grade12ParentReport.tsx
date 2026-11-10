@@ -1,0 +1,29 @@
+import { AlertTriangle, ArrowRight, BarChart3, BookOpen, CalendarDays, CheckCircle2, Clock3, Sparkles, Target, Trophy } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import type { Grade12DetailedParentReport, ParentSubjectReport } from '../lib/grade12-parent-report'
+
+function dateLabel(value:string|null){if(!value)return 'No activity yet';const date=new Date(value);return Number.isNaN(date.getTime())?'Recently':new Intl.DateTimeFormat('en-ZA',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}).format(date)}
+function statusLabel(status:ParentSubjectReport['status']){return status==='ON_TRACK'?'On track':status==='ALMOST_THERE'?'Almost there':status==='NEEDS_ATTENTION'?'Needs attention':'Not started'}
+
+export default function Grade12ParentReport({report,learnerName}:{report:Grade12DetailedParentReport;learnerName:string}){
+  return <div className="grade12-parent-report">
+    <section className="parent-stat-grid grade12-overview-stats">
+      <article><span className="stat-icon mint"><BookOpen size={21}/></span><div><strong>{report.subjectsSelected}</strong><span>Subjects monitored</span></div></article>
+      <article><span className="stat-icon gold"><Trophy size={21}/></span><div><strong>{report.missionsCompleted}<small>/{report.totalMissions}</small></strong><span>Missions complete</span></div></article>
+      <article><span className="stat-icon blue"><BarChart3 size={21}/></span><div><strong>{report.practiceAverage??'—'}{report.practiceAverage!==null&&'%'}</strong><span>Practice average</span></div></article>
+      <article><span className="stat-icon purple"><Sparkles size={21}/></span><div><strong>{report.knowledgePoints}</strong><span>Knowledge points</span></div></article>
+    </section>
+
+    <section className="parent-insight-grid">
+      <article className="positive"><Trophy size={22}/><div><span>STRONGEST SUBJECT</span><h3>{report.strongestSubject?.name??'More practice needed'}</h3><p>{report.strongestSubject?.practiceAverage!==null&&report.strongestSubject?`${report.strongestSubject.practiceAverage}% practice average`:'Complete more missions to identify a strength.'}</p></div></article>
+      <article className="attention"><AlertTriangle size={22}/><div><span>PRIORITY SUBJECT</span><h3>{report.focusSubject?.name??'No priority yet'}</h3><p>{report.focusSubject?.weakestTopic?`Focus on ${report.focusSubject.weakestTopic.name}.`:'FAM will identify a priority after more practice.'}</p></div></article>
+      <article><Clock3 size={22}/><div><span>LAST LEARNING ACTIVITY</span><h3>{dateLabel(report.lastActive)}</h3><p>{report.attempts} recent attempt{report.attempts===1?'':'s'} included in this report.</p></div></article>
+    </section>
+
+    <section className="parent-revision-panel"><header><div><span>FAM REVISION GUIDANCE</span><h2>Recommended next steps for {learnerName}</h2></div><Target size={25}/></header><ol>{report.recommendations.map((item,index)=><li key={item}><b>{index+1}</b><span>{item}</span></li>)}</ol></section>
+
+    <section className="parent-subject-report"><header><div><span>SUBJECT PERFORMANCE</span><h2>Targets, coverage and topic progress</h2></div><small>Parent view · Read only</small></header>{report.subjects.length?<div className="parent-subject-report-grid">{report.subjects.map(subject=><article key={subject.subjectId} className={`status-${subject.status.toLowerCase().replaceAll('_','-')}`}><header><span>{subject.emoji}</span><div><h3>{subject.name}</h3><small>{subject.attempts} attempt{subject.attempts===1?'':'s'} · Target {subject.targetMark}%</small></div><b>{statusLabel(subject.status)}</b></header><div className="subject-report-numbers"><div><span>Practice</span><strong>{subject.practiceAverage??'—'}{subject.practiceAverage!==null&&'%'}</strong></div><div><span>School mark</span><strong>{subject.currentMark??'—'}{subject.currentMark!==null&&'%'}</strong></div><div><span>Target gap</span><strong>{subject.gapToTarget===null?'—':subject.gapToTarget<=0?'Reached':`${subject.gapToTarget}%`}</strong></div></div><div className="subject-coverage-label"><span>Mission coverage</span><strong>{subject.missionsCompleted}/{subject.totalMissions}</strong></div><div className="parent-mini-track"><span style={{width:`${subject.coverage}%`}}/></div><div className="parent-topic-report">{subject.topics.map(topic=><div key={topic.topicId}><span className={`topic-state ${topic.status.toLowerCase()}`}>{topic.status==='COMPLETED'?<CheckCircle2 size={14}/>:<span/>}</span><div><strong>{topic.name}</strong><small>{topic.missionsCompleted}/{topic.totalMissions} missions{topic.practiceAverage!==null?` · ${topic.practiceAverage}% average`:''}</small></div><b>{topic.progress}%</b></div>)}</div><Link to={`/subjects/${subject.subjectId}`}>View subject <ArrowRight size={15}/></Link></article>)}</div>:<div className="parent-empty-state"><span>📘</span><div><strong>No subjects selected yet</strong><p>Once {learnerName} selects Grade 12 subjects, they will appear here.</p></div></div>}</section>
+
+    <section className="parent-recent-report"><header><div><span>RECENT ACTIVITY</span><h2>Latest mission attempts</h2></div><CalendarDays size={22}/></header>{report.recentAttempts.length?<div>{report.recentAttempts.map((attempt,index)=><article key={`${attempt.attemptedAt}-${index}`}><span>{attempt.subjectEmoji}</span><div><strong>{attempt.subjectName}</strong><small>{attempt.topicName} · {attempt.missionTitle}</small><time>{dateLabel(attempt.attemptedAt)}</time></div><b className={attempt.percentage>=70?'good':attempt.percentage>=50?'close':'attention'}>{attempt.percentage}%</b></article>)}</div>:<div className="parent-empty-state"><span>🌱</span><div><strong>No mission attempts yet</strong><p>Recent scores will appear after {learnerName} completes a quiz.</p></div></div>}</section>
+  </div>
+}

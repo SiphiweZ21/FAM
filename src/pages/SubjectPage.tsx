@@ -1027,14 +1027,14 @@ export default function SubjectPage() {
           </div>
 
           <strong className="premium-price">
-            R150 / year
+            From R110 · once-off
           </strong>
 
           <Link
             className="button primary full"
             to="/account"
           >
-            Unlock Premium
+            Choose a Premium Pass
           </Link>
         </section>
       )}

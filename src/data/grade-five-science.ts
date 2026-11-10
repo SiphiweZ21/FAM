@@ -1,0 +1,44 @@
+import type { GradeOneTopic } from './grade-one-topics'
+
+// Grade 5 Natural Sciences and Technology starter informed by DBE Grade 5 ATP.
+export const gradeFiveSciencePaths: GradeOneTopic[] = [
+  { id: 'habitats-and-food-chains', title: 'Habitats & Food Chains', shortTitle: 'Life', emoji: '🌿', colour: 'mint', description: 'Explore habitats, feeding relationships and interdependence.', activities: [
+    { id: 'habitat-needs', prompt: 'What does a habitat provide for an animal?', visual: '🦊 🌳', helper: 'Think about survival.', options: ['Food, water and shelter', 'Only toys', 'Only a name'], answer: 'Food, water and shelter', explanation: 'A suitable habitat provides resources an animal needs.' },
+    { id: 'food-producer', prompt: 'In grass → grasshopper → bird, which is the producer?', visual: '🌱 → 🦗 → 🐦', helper: 'Which makes its own food using light?', options: ['Grass', 'Grasshopper', 'Bird'], answer: 'Grass', explanation: 'Grass makes its own food using sunlight.' },
+    { id: 'food-eater', prompt: 'What eats the grasshopper in this chain?', visual: '🌱 → 🦗 → 🐦', helper: 'Follow the arrow after the grasshopper.', options: ['Bird', 'Grass', 'Rock'], answer: 'Bird', explanation: 'The bird eats the grasshopper in this food chain.' },
+    { id: 'food-herbivore', prompt: 'Which animal eats plants rather than other animals?', visual: '🐇 🌿', helper: 'A herbivore eats plants.', options: ['Rabbit', 'Lion', 'Eagle'], answer: 'Rabbit', explanation: 'Rabbits eat plants and are herbivores.' },
+    { id: 'habitat-change', prompt: 'If a pond dries up, what may happen to frogs living there?', visual: '🐸 💧', helper: 'Think of the water they need.', options: ['They may need another suitable habitat', 'They no longer need water', 'They become stones'], answer: 'They may need another suitable habitat', explanation: 'Loss of water can make the habitat unsuitable for frogs.' }
+  ]},
+  { id: 'skeletons-and-life-cycles', title: 'Skeletons & Life Cycles', shortTitle: 'Bodies', emoji: '🦴', colour: 'blue', description: 'Learn about support, movement and growth stages.', activities: [
+    { id: 'skeleton-support', prompt: 'What does a skeleton help a vertebrate body do?', visual: '🦴', helper: 'Think of shape and movement.', options: ['Support and protect the body', 'Make sunlight', 'Turn into soil'], answer: 'Support and protect the body', explanation: 'A skeleton supports the body and protects some organs.' },
+    { id: 'skeleton-vertebrate', prompt: 'Which animal has a backbone?', visual: '🐕 🪱', helper: 'Vertebrates have backbones.', options: ['Dog', 'Earthworm', 'Snail'], answer: 'Dog', explanation: 'A dog is a vertebrate with a backbone.' },
+    { id: 'skeleton-skull', prompt: 'Which bony part helps protect the brain?', visual: '💀', helper: 'It surrounds the head.', options: ['Skull', 'Kneecap', 'Toe bone'], answer: 'Skull', explanation: 'The skull helps protect the brain.' },
+    { id: 'cycle-butterfly', prompt: 'Which stage comes after a caterpillar in a butterfly’s life cycle?', visual: '🥚 → 🐛 → ? → 🦋', helper: 'Think of the stage before the adult.', options: ['Pupa', 'Egg', 'Adult butterfly'], answer: 'Pupa', explanation: 'A caterpillar forms a pupa before becoming an adult butterfly.' },
+    { id: 'cycle-seed', prompt: 'What may grow from a seed under suitable conditions?', visual: '🌰 → 🌱', helper: 'Think of germination.', options: ['A seedling', 'A stone', 'A plastic bottle'], answer: 'A seedling', explanation: 'A seed can germinate and grow into a seedling.' }
+  ]},
+  { id: 'materials-and-processing', title: 'Materials & Processing', shortTitle: 'Materials', emoji: '🧪', colour: 'purple', description: 'Compare metals, non-metals and material changes.', activities: [
+    { id: 'material-metal', prompt: 'Which item is commonly made from metal?', visual: '🥄', helper: 'Think of a steel utensil.', options: ['Steel spoon', 'Wooden ruler', 'Paper bag'], answer: 'Steel spoon', explanation: 'Steel is a metal used to make many spoons.' },
+    { id: 'material-conductor', prompt: 'Which usually conducts electricity better?', visual: '🔌', helper: 'Think of the material inside wires.', options: ['Copper', 'Dry plastic', 'Dry wood'], answer: 'Copper', explanation: 'Copper is a metal and a good electrical conductor.' },
+    { id: 'material-magnet', prompt: 'Which object is likely to be attracted to a magnet?', visual: '🧲', helper: 'Choose an iron or steel object.', options: ['Steel paper clip', 'Plastic cup', 'Wooden block'], answer: 'Steel paper clip', explanation: 'Many steel objects are attracted to magnets.' },
+    { id: 'material-combine', prompt: 'Why might someone add straw to wet clay for a model?', visual: '🧱 🌾', helper: 'Materials can be combined for a purpose.', options: ['To help strengthen the model when dry', 'To make it invisible', 'To make it into metal'], answer: 'To help strengthen the model when dry', explanation: 'Fibres such as straw can help reinforce a clay mixture.' },
+    { id: 'material-process', prompt: 'Which action changes wet clay into a shaped object?', visual: '🧱 ✋', helper: 'Think of making a model.', options: ['Moulding it', 'Naming it', 'Counting it'], answer: 'Moulding it', explanation: 'Moulding changes the clay into a chosen shape.' }
+  ]},
+  { id: 'energy-electricity-movement', title: 'Energy & Movement', shortTitle: 'Energy', emoji: '⚡', colour: 'gold', description: 'Explore energy sources, circuits and safe movement.', activities: [
+    { id: 'energy-battery', prompt: 'What can supply energy to a small torch?', visual: '🔦 🔋', helper: 'Think of an electrical cell.', options: ['Battery', 'Dry paper', 'A pebble'], answer: 'Battery', explanation: 'A battery can supply energy to a torch.' },
+    { id: 'energy-circuit', prompt: 'What must a simple circuit have for current to flow?', visual: '🔋 💡 🔌', helper: 'Look for an unbroken path.', options: ['A closed path', 'A gap in the wire', 'No power source'], answer: 'A closed path', explanation: 'A complete circuit lets electrical current flow.' },
+    { id: 'energy-fuel', prompt: 'Which is used as a fuel for cooking in some homes?', visual: '🔥', helper: 'Choose a source that can release heat.', options: ['Gas', 'Sand', 'Glass'], answer: 'Gas', explanation: 'Gas is a fuel used for cooking in some homes.' },
+    { id: 'energy-safety', prompt: 'What should you do if you find a damaged plug?', visual: '🔌 ⚠️', helper: 'Avoid touching exposed parts.', options: ['Keep away and tell a responsible adult', 'Touch exposed wires', 'Pour water on it'], answer: 'Keep away and tell a responsible adult', explanation: 'Damaged electrical equipment should be handled by a responsible adult.' },
+    { id: 'movement-wheel', prompt: 'What does a wheel help a trolley do?', visual: '🛒 🛞', helper: 'Think about movement over the floor.', options: ['Roll', 'Float in air', 'Make food'], answer: 'Roll', explanation: 'Wheels allow the trolley to roll.' }
+  ]},
+  { id: 'earth-rocks-and-fossils', title: 'Earth, Rocks & Fossils', shortTitle: 'Earth', emoji: '🪨', colour: 'pink', description: 'Explore soil, rock layers and evidence of past life.', activities: [
+    { id: 'earth-rotation', prompt: 'What causes day and night?', visual: '🌍 ☀️', helper: 'Earth spins on its axis.', options: ['Earth’s rotation', 'The Sun turning off', 'Clouds making night'], answer: 'Earth’s rotation', explanation: 'Earth rotates, so different places face the Sun at different times.' },
+    { id: 'earth-soil', prompt: 'What can weathered rock help form over time?', visual: '🪨 → 🌱', helper: 'Think of material in the ground.', options: ['Soil', 'Plastic', 'Electricity'], answer: 'Soil', explanation: 'Broken-down rock contributes mineral particles to soil.' },
+    { id: 'earth-sediment', prompt: 'How does sedimentary rock often form?', visual: '≋ ≋ ≋', helper: 'Imagine layers pressed together over time.', options: ['Sediment builds up and becomes compacted', 'A paper sheet grows', 'A battery freezes'], answer: 'Sediment builds up and becomes compacted', explanation: 'Layers of sediment can compact and form sedimentary rock.' },
+    { id: 'earth-fossil', prompt: 'What can a fossil tell us?', visual: '🐚 🪨', helper: 'Think of living things from long ago.', options: ['Evidence of past life', 'Tomorrow’s weather', 'The current time'], answer: 'Evidence of past life', explanation: 'A fossil can preserve evidence of organisms that lived long ago.' },
+    { id: 'earth-trace', prompt: 'Which is an example of a trace fossil?', visual: '🐾 🪨', helper: 'It shows activity instead of the body.', options: ['A preserved footprint', 'A living bird', 'A fresh apple'], answer: 'A preserved footprint', explanation: 'A preserved footprint records an organism’s activity.' }
+  ]}
+]
+
+export function getGradeFiveSciencePath(id?: string) {
+  return gradeFiveSciencePaths.find(path => path.id === id)
+}

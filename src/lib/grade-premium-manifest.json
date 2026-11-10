@@ -1,0 +1,868 @@
+{
+  "/grades/grade-5/coding": [
+    {
+      "id": "variables-and-loops",
+      "title": "Variables & Loops"
+    },
+    {
+      "id": "conditions-and-debugging",
+      "title": "Conditions & Debugging"
+    },
+    {
+      "id": "robotics-and-design",
+      "title": "Robotics & Design"
+    },
+    {
+      "id": "internet-and-communication",
+      "title": "Internet & Communication"
+    },
+    {
+      "id": "application-skills",
+      "title": "Application Skills"
+    }
+  ],
+  "/grades/grade-5/life-skills": [
+    {
+      "id": "self-and-feelings",
+      "title": "Self & Feelings"
+    },
+    {
+      "id": "rights-and-respect",
+      "title": "Rights & Respect"
+    },
+    {
+      "id": "health-and-environment",
+      "title": "Health & Environment"
+    },
+    {
+      "id": "creative-arts",
+      "title": "Creative Arts"
+    },
+    {
+      "id": "movement-and-teamwork",
+      "title": "Movement & Teamwork"
+    }
+  ],
+  "/grades/grade-5/mathematics": [
+    {
+      "id": "large-numbers-place-value",
+      "title": "Large Numbers & Place Value"
+    },
+    {
+      "id": "operations-and-number-stories",
+      "title": "Operations & Number Stories"
+    },
+    {
+      "id": "fractions-and-sharing",
+      "title": "Fractions & Sharing"
+    },
+    {
+      "id": "patterns-and-shapes",
+      "title": "Patterns & Shapes"
+    },
+    {
+      "id": "measurement-and-data",
+      "title": "Measurement & Data"
+    }
+  ],
+  "/grades/grade-5/science": [
+    {
+      "id": "habitats-and-food-chains",
+      "title": "Habitats & Food Chains"
+    },
+    {
+      "id": "skeletons-and-life-cycles",
+      "title": "Skeletons & Life Cycles"
+    },
+    {
+      "id": "materials-and-processing",
+      "title": "Materials & Processing"
+    },
+    {
+      "id": "energy-electricity-movement",
+      "title": "Energy & Movement"
+    },
+    {
+      "id": "earth-rocks-and-fossils",
+      "title": "Earth, Rocks & Fossils"
+    }
+  ],
+  "/grades/grade-5/social-sciences": [
+    {
+      "id": "maps-of-africa",
+      "title": "Maps of Africa"
+    },
+    {
+      "id": "landforms-and-weather",
+      "title": "Landforms & Weather"
+    },
+    {
+      "id": "resources-and-mining",
+      "title": "Resources & Mining"
+    },
+    {
+      "id": "early-communities",
+      "title": "Early Communities"
+    },
+    {
+      "id": "heritage-and-evidence",
+      "title": "Heritage & Evidence"
+    }
+  ],
+  "/grades/grade-5/words": [
+    {
+      "id": "reading-for-meaning",
+      "title": "Reading for Meaning"
+    },
+    {
+      "id": "vocabulary-and-figurative-language",
+      "title": "Vocabulary & Figurative Language"
+    },
+    {
+      "id": "grammar-and-sentences",
+      "title": "Grammar & Sentences"
+    },
+    {
+      "id": "spelling-and-editing",
+      "title": "Spelling & Editing"
+    },
+    {
+      "id": "listening-and-viewing",
+      "title": "Listening & Viewing"
+    }
+  ],
+  "/grades/grade-4/coding": [
+    {
+      "id": "algorithms-and-loops",
+      "title": "Algorithms & Loops"
+    },
+    {
+      "id": "decisions-and-patterns",
+      "title": "Decisions & Patterns"
+    },
+    {
+      "id": "robotics-and-design",
+      "title": "Robotics & Design"
+    },
+    {
+      "id": "internet-and-communication",
+      "title": "Internet & Communication"
+    },
+    {
+      "id": "application-skills",
+      "title": "Application Skills"
+    }
+  ],
+  "/grades/grade-4/life-skills": [
+    {
+      "id": "self-and-relationships",
+      "title": "Self & Relationships"
+    },
+    {
+      "id": "hygiene-and-safety",
+      "title": "Hygiene & Safety"
+    },
+    {
+      "id": "community-and-environment",
+      "title": "Community & Environment"
+    },
+    {
+      "id": "creative-arts",
+      "title": "Creative Arts"
+    },
+    {
+      "id": "move-and-play",
+      "title": "Move & Play"
+    }
+  ],
+  "/grades/grade-4/mathematics": [
+    {
+      "id": "whole-numbers-place-value",
+      "title": "Whole Numbers & Place Value"
+    },
+    {
+      "id": "operations-and-problems",
+      "title": "Operations & Problems"
+    },
+    {
+      "id": "fractions-and-patterns",
+      "title": "Fractions & Patterns"
+    },
+    {
+      "id": "measurement-and-time",
+      "title": "Measurement & Time"
+    },
+    {
+      "id": "shapes-and-data",
+      "title": "Shapes & Data"
+    }
+  ],
+  "/grades/grade-4/science": [
+    {
+      "id": "living-things-and-habitats",
+      "title": "Living Things & Habitats"
+    },
+    {
+      "id": "materials-and-properties",
+      "title": "Materials & Properties"
+    },
+    {
+      "id": "energy-and-sound",
+      "title": "Energy & Sound"
+    },
+    {
+      "id": "earth-and-sky",
+      "title": "Earth & Sky"
+    },
+    {
+      "id": "design-and-structures",
+      "title": "Design & Structures"
+    }
+  ],
+  "/grades/grade-4/social-sciences": [
+    {
+      "id": "settlements-and-maps",
+      "title": "Settlements & Maps"
+    },
+    {
+      "id": "food-and-farming",
+      "title": "Food & Farming"
+    },
+    {
+      "id": "water-in-south-africa",
+      "title": "Water in South Africa"
+    },
+    {
+      "id": "local-history-and-leaders",
+      "title": "Local History & Leaders"
+    },
+    {
+      "id": "transport-and-communication",
+      "title": "Transport & Communication"
+    }
+  ],
+  "/grades/grade-4/words": [
+    {
+      "id": "read-and-understand",
+      "title": "Read & Understand"
+    },
+    {
+      "id": "vocabulary-and-spelling",
+      "title": "Vocabulary & Spelling"
+    },
+    {
+      "id": "sentences-and-grammar",
+      "title": "Sentences & Grammar"
+    },
+    {
+      "id": "build-and-edit",
+      "title": "Build & Edit Words"
+    },
+    {
+      "id": "listen-and-view",
+      "title": "Listen & View"
+    }
+  ],
+  "/grades/grade-1/coding": [
+    {
+      "id": "patterns",
+      "title": "Find the Pattern"
+    },
+    {
+      "id": "robot-instructions",
+      "title": "Give the Robot Steps"
+    },
+    {
+      "id": "robot-parts",
+      "title": "Meet the Robot"
+    },
+    {
+      "id": "online-safety",
+      "title": "Be Safe Online"
+    },
+    {
+      "id": "device-skills",
+      "title": "Use a Device"
+    }
+  ],
+  "/grades/grade-1/life-skills": [
+    {
+      "id": "myself-and-others",
+      "title": "Myself & Others"
+    },
+    {
+      "id": "healthy-and-safe",
+      "title": "Healthy & Safe"
+    },
+    {
+      "id": "world-around-us",
+      "title": "Our World"
+    },
+    {
+      "id": "create-and-move",
+      "title": "Create & Move"
+    }
+  ],
+  "/grades/grade-1/mathematics": [
+    {
+      "id": "counting",
+      "title": "Counting Objects"
+    },
+    {
+      "id": "comparing",
+      "title": "Comparing Numbers"
+    },
+    {
+      "id": "sequences",
+      "title": "Number Sequences"
+    },
+    {
+      "id": "shapes-patterns",
+      "title": "Shapes & Patterns"
+    },
+    {
+      "id": "money",
+      "title": "South African Money"
+    },
+    {
+      "id": "time-measurement",
+      "title": "Time & Measurement"
+    }
+  ],
+  "/grades/grade-1/words": [
+    {
+      "id": "letters",
+      "title": "Meet the Letters"
+    },
+    {
+      "id": "sounds",
+      "title": "Letter Sounds"
+    },
+    {
+      "id": "picture-words",
+      "title": "Picture & Word Match"
+    },
+    {
+      "id": "action-words",
+      "title": "Action Words"
+    },
+    {
+      "id": "build-words",
+      "title": "Build a Word"
+    },
+    {
+      "id": "sentences",
+      "title": "Read a Sentence"
+    },
+    {
+      "id": "listening",
+      "title": "Listen & Understand"
+    }
+  ],
+  "/grades/grade-7/coding": [
+    {
+      "id": "algorithms-and-patterns",
+      "title": "Algorithms & Patterns"
+    },
+    {
+      "id": "coding-decisions-and-loops",
+      "title": "Decisions & Loops"
+    },
+    {
+      "id": "robot-design-and-sensors",
+      "title": "Robot Design & Sensors"
+    },
+    {
+      "id": "internet-and-digital-citizenship",
+      "title": "Internet & Digital Citizenship"
+    },
+    {
+      "id": "applications-and-data",
+      "title": "Applications & Data"
+    }
+  ],
+  "/grades/grade-7/creative-arts": [
+    {
+      "id": "dance-and-movement",
+      "title": "Dance & Movement"
+    },
+    {
+      "id": "drama-and-storytelling",
+      "title": "Drama & Storytelling"
+    },
+    {
+      "id": "music-and-listening",
+      "title": "Music & Listening"
+    },
+    {
+      "id": "visual-arts",
+      "title": "Visual Arts"
+    },
+    {
+      "id": "creative-process-and-reflection",
+      "title": "Creative Process & Reflection"
+    }
+  ],
+  "/grades/grade-7/ems": [
+    {
+      "id": "money-needs-and-wants",
+      "title": "Money, Needs & Wants"
+    },
+    {
+      "id": "goods-services-and-production",
+      "title": "Goods, Services & Production"
+    },
+    {
+      "id": "inequality-and-poverty",
+      "title": "Inequality & Poverty"
+    },
+    {
+      "id": "savings-budgets-and-records",
+      "title": "Savings, Budgets & Records"
+    },
+    {
+      "id": "entrepreneurs-and-business",
+      "title": "Entrepreneurs & Business"
+    }
+  ],
+  "/grades/grade-7/life-orientation": [
+    {
+      "id": "self-image-and-peer-pressure",
+      "title": "Self-Image & Peer Pressure"
+    },
+    {
+      "id": "health-and-environment",
+      "title": "Health & Environment"
+    },
+    {
+      "id": "rights-and-responsibilities",
+      "title": "Rights & Responsibilities"
+    },
+    {
+      "id": "study-and-world-of-work",
+      "title": "Study & World of Work"
+    },
+    {
+      "id": "physical-education",
+      "title": "Physical Education"
+    }
+  ],
+  "/grades/grade-7/mathematics": [
+    {
+      "id": "whole-numbers-and-ratios",
+      "title": "Whole Numbers & Ratios"
+    },
+    {
+      "id": "fractions-decimals-and-percentages",
+      "title": "Fractions, Decimals & Percentages"
+    },
+    {
+      "id": "integers-and-exponents",
+      "title": "Integers & Exponents"
+    },
+    {
+      "id": "patterns-and-equations",
+      "title": "Patterns & Equations"
+    },
+    {
+      "id": "geometry-measurement-and-data",
+      "title": "Geometry, Measurement & Data"
+    }
+  ],
+  "/grades/grade-7/science": [
+    {
+      "id": "biosphere-and-biodiversity",
+      "title": "Biosphere & Biodiversity"
+    },
+    {
+      "id": "reproduction-and-life-cycles",
+      "title": "Reproduction & Life Cycles"
+    },
+    {
+      "id": "materials-and-separation",
+      "title": "Materials & Separation"
+    },
+    {
+      "id": "energy-and-heat-transfer",
+      "title": "Energy & Heat Transfer"
+    },
+    {
+      "id": "sun-earth-and-moon",
+      "title": "Sun, Earth & Moon"
+    }
+  ],
+  "/grades/grade-7/social-sciences": [
+    {
+      "id": "world-maps-and-routes",
+      "title": "World Maps & Routes"
+    },
+    {
+      "id": "hazards-population-and-resources",
+      "title": "Hazards, Population & Resources"
+    },
+    {
+      "id": "mali-and-timbuktu",
+      "title": "Mali & Timbuktu"
+    },
+    {
+      "id": "transatlantic-slave-trade",
+      "title": "Transatlantic Slave Trade"
+    },
+    {
+      "id": "cape-colonisation-and-sources",
+      "title": "Cape Colonisation & Sources"
+    }
+  ],
+  "/grades/grade-7/technology": [
+    {
+      "id": "design-process",
+      "title": "Design Process"
+    },
+    {
+      "id": "mechanical-systems",
+      "title": "Mechanical Systems"
+    },
+    {
+      "id": "structures-and-drawings",
+      "title": "Structures & Drawings"
+    },
+    {
+      "id": "electrical-systems-and-magnetism",
+      "title": "Electrical Systems & Magnetism"
+    },
+    {
+      "id": "materials-and-human-needs",
+      "title": "Materials & Human Needs"
+    }
+  ],
+  "/grades/grade-7/words": [
+    {
+      "id": "reading-and-comprehension",
+      "title": "Reading & Comprehension"
+    },
+    {
+      "id": "literature-and-language",
+      "title": "Literature & Figurative Language"
+    },
+    {
+      "id": "listening-and-speaking",
+      "title": "Listening & Speaking"
+    },
+    {
+      "id": "writing-and-summary",
+      "title": "Writing & Summary"
+    },
+    {
+      "id": "grammar-and-visual-literacy",
+      "title": "Grammar & Visual Literacy"
+    }
+  ],
+  "/grades/grade-6/coding": [
+    {
+      "id": "algorithms-and-loops",
+      "title": "Algorithms & Loops"
+    },
+    {
+      "id": "decisions-and-debugging",
+      "title": "Decisions & Debugging"
+    },
+    {
+      "id": "robot-systems-and-design",
+      "title": "Robot Systems & Design"
+    },
+    {
+      "id": "digital-citizenship",
+      "title": "Digital Citizenship"
+    },
+    {
+      "id": "application-and-data-skills",
+      "title": "Application & Data Skills"
+    }
+  ],
+  "/grades/grade-6/life-skills": [
+    {
+      "id": "self-image-and-changes",
+      "title": "Self-image & Changes"
+    },
+    {
+      "id": "peacekeeping-and-respect",
+      "title": "Peacekeeping & Respect"
+    },
+    {
+      "id": "health-and-environment",
+      "title": "Health & Environment"
+    },
+    {
+      "id": "visual-and-performing-arts",
+      "title": "Visual & Performing Arts"
+    },
+    {
+      "id": "movement-and-participation",
+      "title": "Movement & Participation"
+    }
+  ],
+  "/grades/grade-6/mathematics": [
+    {
+      "id": "whole-numbers-and-operations",
+      "title": "Whole Numbers & Operations"
+    },
+    {
+      "id": "fractions-and-percentages",
+      "title": "Fractions & Percentages"
+    },
+    {
+      "id": "decimal-fractions",
+      "title": "Decimal Fractions"
+    },
+    {
+      "id": "patterns-and-number-sentences",
+      "title": "Patterns & Number Sentences"
+    },
+    {
+      "id": "geometry-measurement-and-data",
+      "title": "Geometry, Measurement & Data"
+    }
+  ],
+  "/grades/grade-6/science": [
+    {
+      "id": "photosynthesis-and-nutrition",
+      "title": "Photosynthesis & Nutrition"
+    },
+    {
+      "id": "ecosystems-and-food-webs",
+      "title": "Ecosystems & Food Webs"
+    },
+    {
+      "id": "mixtures-and-water",
+      "title": "Mixtures & Water"
+    },
+    {
+      "id": "circuits-and-energy-systems",
+      "title": "Circuits & Energy Systems"
+    },
+    {
+      "id": "solar-system-and-design",
+      "title": "Solar System & Design"
+    }
+  ],
+  "/grades/grade-6/social-sciences": [
+    {
+      "id": "world-maps-and-trade",
+      "title": "World Maps & Trade"
+    },
+    {
+      "id": "climate-and-population",
+      "title": "Climate & Population"
+    },
+    {
+      "id": "mapungubwe-and-evidence",
+      "title": "Mapungubwe & Evidence"
+    },
+    {
+      "id": "exploration-and-democracy",
+      "title": "Exploration & Democracy"
+    },
+    {
+      "id": "medicine-through-time",
+      "title": "Medicine Through Time"
+    }
+  ],
+  "/grades/grade-6/words": [
+    {
+      "id": "reading-and-inference",
+      "title": "Reading & Inference"
+    },
+    {
+      "id": "listening-and-instructions",
+      "title": "Listening & Instructions"
+    },
+    {
+      "id": "writing-and-text-purpose",
+      "title": "Writing & Text Purpose"
+    },
+    {
+      "id": "language-structures",
+      "title": "Language Structures"
+    },
+    {
+      "id": "vocabulary-and-viewing",
+      "title": "Vocabulary & Viewing"
+    }
+  ],
+  "/grades/grade-3/coding": [
+    {
+      "id": "patterns-and-rules",
+      "title": "Patterns & Rules"
+    },
+    {
+      "id": "algorithms-and-debugging",
+      "title": "Algorithms & Debugging"
+    },
+    {
+      "id": "robot-input-output",
+      "title": "Robot Input & Output"
+    },
+    {
+      "id": "digital-citizenship",
+      "title": "Digital Citizenship"
+    },
+    {
+      "id": "digital-tools",
+      "title": "Digital Tools"
+    }
+  ],
+  "/grades/grade-3/life-skills": [
+    {
+      "id": "living-things",
+      "title": "Living Things"
+    },
+    {
+      "id": "weather-and-water",
+      "title": "Weather & Water"
+    },
+    {
+      "id": "healthy-choices",
+      "title": "Healthy Choices"
+    },
+    {
+      "id": "community-and-safety",
+      "title": "Community & Safety"
+    },
+    {
+      "id": "create-and-move",
+      "title": "Create & Move"
+    }
+  ],
+  "/grades/grade-3/mathematics": [
+    {
+      "id": "hundreds-tens-ones",
+      "title": "Hundreds, Tens & Ones"
+    },
+    {
+      "id": "addition-subtraction",
+      "title": "Add & Subtract"
+    },
+    {
+      "id": "groups-and-sharing",
+      "title": "Groups & Sharing"
+    },
+    {
+      "id": "fractions-patterns",
+      "title": "Fractions & Patterns"
+    },
+    {
+      "id": "time-shapes-data",
+      "title": "Time, Shapes & Data"
+    }
+  ],
+  "/grades/grade-3/words": [
+    {
+      "id": "sounds-and-spelling",
+      "title": "Sounds & Spelling"
+    },
+    {
+      "id": "word-meanings",
+      "title": "Word Meanings"
+    },
+    {
+      "id": "build-words",
+      "title": "Build a Word"
+    },
+    {
+      "id": "sentences-and-punctuation",
+      "title": "Sentences & Punctuation"
+    },
+    {
+      "id": "stories-and-questions",
+      "title": "Stories & Questions"
+    }
+  ],
+  "/grades/grade-2/coding": [
+    {
+      "id": "patterns-and-debugging",
+      "title": "Patterns & Debugging"
+    },
+    {
+      "id": "code-a-route",
+      "title": "Code a Route"
+    },
+    {
+      "id": "robot-systems",
+      "title": "Robot Systems"
+    },
+    {
+      "id": "digital-safety",
+      "title": "Digital Safety"
+    },
+    {
+      "id": "device-tools",
+      "title": "Device Tools"
+    }
+  ],
+  "/grades/grade-2/life-skills": [
+    {
+      "id": "what-we-need",
+      "title": "What We Need to Live"
+    },
+    {
+      "id": "friends-and-respect",
+      "title": "Friends & Respect"
+    },
+    {
+      "id": "everyone-is-special",
+      "title": "Everyone Is Special"
+    },
+    {
+      "id": "healthy-living",
+      "title": "Healthy Living"
+    },
+    {
+      "id": "create-and-move",
+      "title": "Create & Move"
+    }
+  ],
+  "/grades/grade-2/mathematics": [
+    {
+      "id": "tens-and-ones",
+      "title": "Tens & Ones"
+    },
+    {
+      "id": "add-and-subtract",
+      "title": "Add & Subtract"
+    },
+    {
+      "id": "number-patterns",
+      "title": "Number Patterns"
+    },
+    {
+      "id": "shapes-and-measurement",
+      "title": "Shapes & Measurement"
+    },
+    {
+      "id": "money-and-data",
+      "title": "Money & Picture Graphs"
+    }
+  ],
+  "/grades/grade-2/words": [
+    {
+      "id": "sounds-and-blends",
+      "title": "Sounds & Blends"
+    },
+    {
+      "id": "picture-vocabulary",
+      "title": "Picture Vocabulary"
+    },
+    {
+      "id": "build-words",
+      "title": "Build Longer Words"
+    },
+    {
+      "id": "read-sentences",
+      "title": "Read a Sentence"
+    },
+    {
+      "id": "listen-and-understand",
+      "title": "Listen & Understand"
+    }
+  ]
+}

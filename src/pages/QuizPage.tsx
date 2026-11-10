@@ -283,6 +283,9 @@ export default function QuizPage() {
 
               percentage,
 
+              mastered:
+                percentage >= 80,
+
               knowledgePoints:
                 nextKnowledgePoints
             }
